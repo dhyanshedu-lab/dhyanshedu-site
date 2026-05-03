@@ -143,13 +143,124 @@
             gap: 5px;
             cursor: pointer;
             z-index: 1001;
+            padding: 10px;
         }
         .hamburger span {
             width: 28px;
             height: 3px;
             background: var(--white);
             border-radius: 3px;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform-origin: center;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 6px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -6px);
+        }
+        /* ===== SCROLL ANIMATIONS ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal-scale.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+        .delay-5 { transition-delay: 0.5s; }
+        /* ===== TESTIMONIAL CAROUSEL ===== */
+        .testimonials-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+        .testimonials-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .testimonials-track .testimonial-card {
+            min-width: calc(33.333% - 20px);
+            margin: 0 10px;
+            flex-shrink: 0;
+        }
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 40px;
+        }
+        .carousel-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid rgba(212,160,23,0.3);
+            background: rgba(10,22,40,0.8);
+            color: var(--accent-gold);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.3s ease;
+        }
+        .carousel-btn:hover {
+            background: var(--gradient-gold);
+            color: var(--primary-dark);
+            border-color: var(--accent-gold);
+            transform: scale(1.1);
+        }
+        .carousel-dots {
+            display: flex;
+            gap: 8px;
+        }
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(212,160,23,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .carousel-dot.active {
+            background: var(--accent-gold);
+            transform: scale(1.3);
         }
         /* ===== HERO SECTION (REFINED WITH IMAGE FIX) ===== */
         .hero {
@@ -894,7 +1005,7 @@
             .hero h1 { font-size: 42px; }
             .features-grid { grid-template-columns: repeat(2, 1fr); }
             .boards-grid { grid-template-columns: repeat(3, 1fr); }
-            .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+            .testimonials-track .testimonial-card { min-width: calc(50% - 20px); }
             .footer-grid { grid-template-columns: 1fr 1fr; }
             .mentor-grid { grid-template-columns: 1fr; }
             .mentor-photo-wrapper { display: flex; justify-content: center; }
@@ -905,17 +1016,32 @@
         @media (max-width: 768px) {
             .hamburger { display: flex; }
             .nav-links {
-                display: none;
                 position: fixed;
                 top: 0; left: 0; right: 0; bottom: 0;
                 background: rgba(10,22,40,0.98);
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                gap: 30px;
+                gap: 25px;
                 z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-20px);
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             }
-            .nav-links.active { display: flex; }
+            .nav-links.active {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+            .nav-links a {
+                font-size: 20px;
+                padding: 12px 20px;
+            }
+            .nav-cta {
+                font-size: 18px !important;
+                padding: 14px 36px !important;
+            }
             .hero-container {
                 grid-template-columns: 1fr;
                 text-align: center;
@@ -933,21 +1059,55 @@
             .mentor-photo { width: 280px; height: 340px; margin: 0 auto; }
             .mentor-highlights { grid-template-columns: 1fr; }
             .contact-grid { grid-template-columns: 1fr; }
-            .testimonials-grid { grid-template-columns: 1fr; }
+            .testimonials-track .testimonial-card { min-width: calc(100% - 20px); }
             .section-header h2 { font-size: 32px; }
             .cta-box { padding: 50px 25px; }
             .cta-box h2 { font-size: 30px; }
             .footer-grid { grid-template-columns: 1fr; }
             .footer-bottom { flex-direction: column; gap: 15px; text-align: center; }
             .form-row { grid-template-columns: 1fr; }
+            /* Improved touch targets */
+            .btn-primary, .btn-secondary {
+                padding: 18px 36px;
+                font-size: 16px;
+                min-height: 52px;
+            }
+            .feature-card { padding: 35px 25px; }
+            .board-card { padding: 30px 18px; }
+            .contact-item .icon {
+                width: 52px;
+                height: 52px;
+                min-width: 52px;
+            }
+            .form-group input,
+            .form-group select {
+                padding: 16px 18px;
+                font-size: 16px;
+            }
+            .form-submit {
+                padding: 18px;
+                font-size: 17px;
+                min-height: 56px;
+            }
+            .carousel-btn {
+                width: 50px;
+                height: 50px;
+            }
         }
         @media (max-width: 480px) {
-            .hero h1 { font-size: 30px; }
-            .hero-tagline { font-size: 18px; }
-            .hero-image-wrapper { width: 260px; height: 320px; min-height: 280px; }
+            .hero h1 { font-size: 28px; }
+            .hero-tagline { font-size: 17px; }
+            .hero-image-wrapper { width: 250px; height: 300px; min-height: 260px; }
             .boards-grid { grid-template-columns: 1fr; max-width: 300px; margin: 0 auto; }
             .hero-buttons { flex-direction: column; align-items: center; }
             .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+            .section-header h2 { font-size: 26px; }
+            .section-header p { font-size: 15px; }
+            .cta-box h2 { font-size: 24px; }
+            .cta-box p { font-size: 15px; }
+            .nav-container { padding: 0 15px; }
+            .logo-text { font-size: 20px; }
+            .logo-icon { width: 40px; height: 40px; }
         }
     </style>
 </head>
@@ -1034,28 +1194,28 @@
     <!-- ===== FEATURES SECTION ===== -->
     <section class="features" id="features">
         <div class="section-container">
-            <div class="section-header">
+            <div class="section-header reveal">
                 <span class="section-label">Why DhyanshEdu</span>
                 <h2>What Makes Us <span class="gold">Different</span></h2>
                 <p>Our teaching methodology is built around four core pillars that ensure every student succeeds.</p>
             </div>
             <div class="features-grid">
-                <div class="feature-card">
+                <div class="feature-card reveal delay-1">
                     <div class="feature-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
                     <h3>Live Classes</h3>
                     <p>Interactive & concept-driven sessions that bring Maths to life. Ask questions in real time.</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card reveal delay-2">
                     <div class="feature-icon"><i class="fa-solid fa-bullseye"></i></div>
                     <h3>Focused Learning</h3>
                     <p>No distractions. Only clarity. Each session is structured for maximum understanding.</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card reveal delay-3">
                     <div class="feature-icon"><i class="fa-solid fa-chart-line"></i></div>
                     <h3>Real Results</h3>
                     <p>Track progress and improve faster. Our students consistently see grade improvements.</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card reveal delay-4">
                     <div class="feature-icon"><i class="fa-solid fa-comments"></i></div>
                     <h3>Doubt Support</h3>
                     <p>Ask anytime. Learn better. Get your doubts cleared even outside class hours.</p>
@@ -1066,13 +1226,13 @@
     <!-- ===== MENTOR SECTION ===== -->
     <section class="mentor" id="mentor">
         <div class="section-container">
-            <div class="section-header">
+            <div class="section-header reveal">
                 <span class="section-label">Your Educator</span>
                 <h2>Meet Your <span class="gold">Mentor</span></h2>
                 <p>Learn from an experienced Mathematics educator with a proven track record of student success.</p>
             </div>
             <div class="mentor-grid">
-                <div class="mentor-photo-wrapper">
+                <div class="mentor-photo-wrapper reveal-left">
                     <div class="mentor-photo">
                         <img src="mentor-photo.png" alt="Mounika - Maths Mentor"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -1083,7 +1243,7 @@
                     </div>
                     <div class="mentor-badge-float">⭐ IIT JEE Maths Expert</div>
                 </div>
-                <div class="mentor-content">
+                <div class="mentor-content reveal-right">
                     <h2>Hi, I'm <span class="gold">Mounika</span></h2>
                     <p class="mentor-title">Mathematics Faculty & IIT JEE Expert | Bengaluru, Karnataka</p>
                     <p>Passionate and experienced Mathematics educator with a strong background in preparing students for the IIT JEE examination. I bring concept-first teaching, personalized mentoring, and years of experience across multiple curricula including CBSE and the Australian curriculum.</p>
@@ -1120,33 +1280,33 @@
     <!-- ===== BOARDS SECTION ===== -->
     <section class="boards" id="boards">
         <div class="section-container">
-            <div class="section-header">
+            <div class="section-header reveal">
                 <span class="section-label">Curriculum Coverage</span>
                 <h2>Boards & <span class="gold">Exams We Cover</span></h2>
                 <p>Comprehensive Maths coaching for multiple boards and competitive exams worldwide.</p>
             </div>
             <div class="boards-grid">
-                <div class="board-card">
+                <div class="board-card reveal delay-1">
                     <div class="board-icon">📘</div>
                     <h3>CBSE</h3>
                     <p>Class 6–12 NCERT based curriculum</p>
                 </div>
-                <div class="board-card">
+                <div class="board-card reveal delay-2">
                     <div class="board-icon">📗</div>
                     <h3>ICSE</h3>
                     <p>Comprehensive ICSE Maths preparation</p>
                 </div>
-                <div class="board-card">
+                <div class="board-card reveal delay-3">
                     <div class="board-icon">🎯</div>
                     <h3>JEE</h3>
                     <p>JEE Main & Advanced Maths coaching</p>
                 </div>
-                <div class="board-card">
+                <div class="board-card reveal delay-4">
                     <div class="board-icon">🌏</div>
                     <h3>AUS</h3>
                     <p>Australian curriculum Maths support</p>
                 </div>
-                <div class="board-card">
+                <div class="board-card reveal delay-5">
                     <div class="board-icon">🇺🇸</div>
                     <h3>US</h3>
                     <p>US curriculum & Common Core Maths</p>
@@ -1157,41 +1317,52 @@
     <!-- ===== TESTIMONIALS ===== -->
     <section class="testimonials" id="testimonials">
         <div class="section-container">
-            <div class="section-header">
+            <div class="section-header reveal">
                 <span class="section-label">Testimonials</span>
                 <h2>What Our <span class="gold">Students Say</span></h2>
                 <p>Real stories from real students who transformed their Maths journey with us.</p>
             </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-stars">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <div class="testimonials-wrapper reveal">
+                <div class="testimonials-track" id="testimonialsTrack">
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <blockquote>"Mounika ma'am explains concepts so clearly that Maths actually became fun. My scores jumped from 65 to 92 in just 3 months!"</blockquote>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">A</div>
+                            <div><h4>Aarav S.</h4><p>Class 10 • CBSE</p></div>
+                        </div>
                     </div>
-                    <blockquote>"Mounika ma'am explains concepts so clearly that Maths actually became fun. My scores jumped from 65 to 92 in just 3 months!"</blockquote>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">A</div>
-                        <div><h4>Aarav S.</h4><p>Class 10 • CBSE</p></div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <blockquote>"The doubt support is amazing. I can ask questions anytime, and she responds quickly with detailed explanations. Best decision for my JEE prep!"</blockquote>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">P</div>
+                            <div><h4>Priya M.</h4><p>Class 12 • JEE Aspirant</p></div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <blockquote>"As a parent in Australia, I'm impressed with how well the online classes work. My son's confidence in Maths has grown tremendously. Highly recommended!"</blockquote>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">R</div>
+                            <div><h4>Rachel T.</h4><p>Parent • AUS Curriculum</p></div>
+                        </div>
                     </div>
                 </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-stars">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <blockquote>"The doubt support is amazing. I can ask questions anytime, and she responds quickly with detailed explanations. Best decision for my JEE prep!"</blockquote>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">P</div>
-                        <div><h4>Priya M.</h4><p>Class 12 • JEE Aspirant</p></div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-stars">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <blockquote>"As a parent in Australia, I'm impressed with how well the online classes work. My son's confidence in Maths has grown tremendously. Highly recommended!"</blockquote>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">R</div>
-                        <div><h4>Rachel T.</h4><p>Parent • AUS Curriculum</p></div>
-                    </div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn" id="prevBtn" aria-label="Previous testimonial">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <div class="carousel-dots" id="carouselDots"></div>
+                    <button class="carousel-btn" id="nextBtn" aria-label="Next testimonial">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -1199,7 +1370,7 @@
     <!-- ===== CTA SECTION ===== -->
     <section class="cta-section">
         <div class="section-container">
-            <div class="cta-box">
+            <div class="cta-box reveal-scale">
                 <h2>Start Your <span class="gold">Maths Transformation</span> Today</h2>
                 <p>Join hundreds of students who are already excelling in Maths. Book your free demo class now and experience the DhyanshEdu difference.</p>
                 <div class="cta-buttons">
@@ -1219,7 +1390,7 @@
     <section class="contact" id="contact">
         <div class="section-container">
             <div class="contact-grid">
-                <div class="contact-info">
+                <div class="contact-info reveal-left">
                     <span class="section-label">Get In Touch</span>
                     <h2>Ready to <span class="gold">Excel in Maths?</span></h2>
                     <p>Fill in the form or reach out directly. We'd love to help you start your Maths transformation journey with Mounika.</p>
@@ -1247,7 +1418,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="contact-form" id="formContainer">
+                <div class="contact-form reveal-right" id="formContainer">
                     <h3>📝 Book a Free Demo Class</h3>
                     <form id="enrollForm">
                         <div class="form-row">
@@ -1355,15 +1526,22 @@
     
     <!-- ===== JAVASCRIPT ===== -->
     <script>
-        // Hamburger Menu functionality
+        // ===== HAMBURGER MENU (SMOOTH TOGGLE) =====
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
         function toggleMenu() {
-            document.getElementById('navLinks').classList.toggle('active');
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
         }
         function closeMenu() {
-            document.getElementById('navLinks').classList.remove('active');
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+            document.body.style.overflow = '';
         }
 
-        // Navbar scroll effect
+        // ===== NAVBAR SCROLL EFFECT =====
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
             if (window.scrollY > 50) {
@@ -1373,12 +1551,178 @@
             }
         });
 
+        // ===== SCROLL REVEAL ANIMATIONS =====
+        const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // ===== ANIMATED COUNTERS =====
+        function animateCounter(element, target, suffix = '') {
+            let current = 0;
+            const increment = target / 60;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current) + suffix;
+            }, 25);
+        }
+
+        const statElements = document.querySelectorAll('.float-stat .stat-info h4');
+        let countersAnimated = false;
+
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !countersAnimated) {
+                    countersAnimated = true;
+                    statElements.forEach(el => {
+                        const text = el.textContent.trim();
+                        if (text.includes('500')) {
+                            el.textContent = '0+';
+                            animateCounter(el, 500, '+');
+                        } else if (text.includes('4.9')) {
+                            el.textContent = '0';
+                            let current = 0;
+                            const timer = setInterval(() => {
+                                current += 0.08;
+                                if (current >= 4.9) {
+                                    current = 4.9;
+                                    clearInterval(timer);
+                                }
+                                el.textContent = current.toFixed(1) + '/5';
+                            }, 25);
+                        } else if (text.includes('95')) {
+                            el.textContent = '0%';
+                            animateCounter(el, 95, '%');
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const heroImage = document.querySelector('.hero-image');
+        if (heroImage) counterObserver.observe(heroImage);
+
+        // ===== TESTIMONIAL CAROUSEL =====
+        const track = document.getElementById('testimonialsTrack');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dotsContainer = document.getElementById('carouselDots');
+        const cards = track ? track.querySelectorAll('.testimonial-card') : [];
+        let currentSlide = 0;
+        let slidesPerView = 3;
+        let autoSlideInterval;
+
+        function getSlidePerView() {
+            if (window.innerWidth <= 768) return 1;
+            if (window.innerWidth <= 1024) return 2;
+            return 3;
+        }
+
+        function getTotalSlides() {
+            return Math.max(1, cards.length - slidesPerView + 1);
+        }
+
+        function updateCarousel() {
+            if (!track) return;
+            const cardWidth = track.parentElement.offsetWidth / slidesPerView;
+            track.style.transform = `translateX(-${currentSlide * cardWidth}px)`;
+            updateDots();
+        }
+
+        function createDots() {
+            if (!dotsContainer) return;
+            dotsContainer.innerHTML = '';
+            const total = getTotalSlides();
+            for (let i = 0; i < total; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                dot.addEventListener('click', () => { currentSlide = i; updateCarousel(); resetAutoSlide(); });
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function updateDots() {
+            if (!dotsContainer) return;
+            dotsContainer.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % getTotalSlides();
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + getTotalSlides()) % getTotalSlides();
+            updateCarousel();
+        }
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(nextSlide, 4000);
+        }
+
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            startAutoSlide();
+        }
+
+        if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); resetAutoSlide(); });
+        if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); resetAutoSlide(); });
+
+        // Touch/swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        if (track) {
+            track.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+            track.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                const diff = touchStartX - touchEndX;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) nextSlide();
+                    else prevSlide();
+                    resetAutoSlide();
+                }
+            }, { passive: true });
+        }
+
+        function initCarousel() {
+            slidesPerView = getSlidePerView();
+            currentSlide = 0;
+            createDots();
+            updateCarousel();
+        }
+
+        window.addEventListener('resize', () => {
+            slidesPerView = getSlidePerView();
+            if (currentSlide >= getTotalSlides()) currentSlide = getTotalSlides() - 1;
+            createDots();
+            updateCarousel();
+        });
+
+        initCarousel();
+        startAutoSlide();
+
+        // Pause auto-slide on hover
+        if (track) {
+            track.parentElement.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+            track.parentElement.addEventListener('mouseleave', startAutoSlide);
+        }
+
         // ===== FORM SUBMISSION TO WHATSAPP =====
         document.getElementById('enrollForm').addEventListener('submit', function(event) {
-            // 1. Prevent the page from refreshing on form submit
-            event.preventDefault(); 
+            event.preventDefault();
 
-            // 2. Gather values from the form inputs
             const studentName = document.getElementById('studentName').value.trim();
             const parentName = document.getElementById('parentName').value.trim() || 'Not provided';
             const phone = document.getElementById('phone').value.trim();
@@ -1386,22 +1730,13 @@
             const studentClass = document.getElementById('studentClass').value;
             const board = document.getElementById('board').value;
 
-            // 3. Construct the message
             const message = `Hello DhyanshEdu! I would like to book a free demo class.\n\n*Student Name:* ${studentName}\n*Parent Name:* ${parentName}\n*Phone:* ${phone}\n*Email:* ${email}\n*Class:* ${studentClass}\n*Board:* ${board}`;
 
-            // 4. Encode the message so it's safe to use in a URL
             const encodedMessage = encodeURIComponent(message);
-
-            // 5. Specify the WhatsApp phone number (No +, spaces, or dashes)
             const whatsappNumber = '918500900658';
-
-            // 6. Build the final URL
             const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-            // 7. Open WhatsApp in a new tab/window
             window.open(whatsappUrl, '_blank');
-
-            // 8. Clear the form after sending
             this.reset();
         });
     </script>
