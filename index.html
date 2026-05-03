@@ -38,7 +38,6 @@
             overflow-x: hidden;
             background: var(--primary-dark);
         }
-
         /* ===== FIXED NAVBAR ===== */
         .navbar {
             position: fixed;
@@ -152,7 +151,6 @@
             border-radius: 3px;
             transition: all 0.3s ease;
         }
-
         /* ===== HERO SECTION (REFINED WITH IMAGE FIX) ===== */
         .hero {
             min-height: 100vh;
@@ -297,7 +295,6 @@
             color: var(--accent-gold);
             transform: translateY(-3px);
         }
-
         /* ===== HERO IMAGE — FIXED HEIGHT ISSUE ===== */
         .hero-image {
             position: relative;
@@ -390,7 +387,6 @@
             from { opacity: 0; transform: translateX(50px); }
             to { opacity: 1; transform: translateX(0); }
         }
-
         /* ===== SECTION COMMON STYLES ===== */
         .section-container {
             max-width: 1200px;
@@ -425,7 +421,6 @@
             max-width: 600px;
             margin: 0 auto;
         }
-
         /* ===== FEATURES SECTION ===== */
         .features {
             padding: 100px 0;
@@ -501,7 +496,6 @@
             color: var(--text-gray);
             line-height: 1.6;
         }
-
         /* ===== MENTOR SECTION ===== */
         .mentor {
             padding: 100px 0;
@@ -620,7 +614,6 @@
             align-items: center;
             gap: 6px;
         }
-
         /* ===== BOARDS SECTION ===== */
         .boards {
             padding: 100px 0;
@@ -647,7 +640,6 @@
         .board-card .board-icon { font-size: 36px; margin-bottom: 15px; }
         .board-card h3 { font-size: 20px; font-weight: 700; color: var(--accent-gold); margin-bottom: 8px; }
         .board-card p { font-size: 13px; color: var(--text-gray); }
-
         /* ===== TESTIMONIALS ===== */
         .testimonials {
             padding: 100px 0;
@@ -700,7 +692,6 @@
         }
         .testimonial-author h4 { font-size: 15px; font-weight: 600; }
         .testimonial-author p { font-size: 13px; color: var(--text-gray); }
-
         /* ===== CTA SECTION ===== */
         .cta-section {
             padding: 100px 0;
@@ -733,7 +724,6 @@
             flex-wrap: wrap;
             position: relative;
         }
-
         /* ===== CONTACT / FORM SECTION ===== */
         .contact {
             padding: 100px 0;
@@ -834,7 +824,6 @@
             transform: translateY(-2px);
             box-shadow: var(--shadow-gold);
         }
-
         /* ===== FOOTER ===== */
         .footer {
             background: #060e1a;
@@ -871,7 +860,6 @@
         }
         .footer-bottom p { color: var(--text-gray); font-size: 14px; }
         .footer-bottom .gold { color: var(--accent-gold); }
-
         /* ===== WHATSAPP FLOATING BUTTON ===== */
         .whatsapp-float {
             position: fixed;
@@ -901,7 +889,6 @@
             70% { box-shadow: 0 0 0 15px rgba(37,211,102,0); }
             100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
         }
-
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
             .hero h1 { font-size: 42px; }
@@ -965,7 +952,6 @@
     </style>
 </head>
 <body>
-
     <!-- ===== NAVBAR (FIXED) ===== -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
@@ -991,7 +977,6 @@
             </div>
         </div>
     </nav>
-
     <!-- ===== HERO SECTION (REFINED — IMAGE FIX APPLIED) ===== -->
     <section class="hero" id="home">
         <span class="math-float">y = mx + c</span>
@@ -1046,7 +1031,6 @@
             </div>
         </div>
     </section>
-
     <!-- ===== FEATURES SECTION ===== -->
     <section class="features" id="features">
         <div class="section-container">
@@ -1079,7 +1063,6 @@
             </div>
         </div>
     </section>
-
     <!-- ===== MENTOR SECTION ===== -->
     <section class="mentor" id="mentor">
         <div class="section-container">
@@ -1134,7 +1117,6 @@
             </div>
         </div>
     </section>
-
     <!-- ===== BOARDS SECTION ===== -->
     <section class="boards" id="boards">
         <div class="section-container">
@@ -1172,7 +1154,6 @@
             </div>
         </div>
     </section>
-
     <!-- ===== TESTIMONIALS ===== -->
     <section class="testimonials" id="testimonials">
         <div class="section-container">
@@ -1215,7 +1196,6 @@
             </div>
         </div>
     </section>
-
     <!-- ===== CTA SECTION ===== -->
     <section class="cta-section">
         <div class="section-container">
@@ -1235,7 +1215,6 @@
             </div>
         </div>
     </section>
-
     <!-- ===== CONTACT SECTION ===== -->
     <section class="contact" id="contact">
         <div class="section-container">
@@ -1325,7 +1304,6 @@
             </div>
         </div>
     </section>
-
     <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="section-container">
@@ -1370,17 +1348,62 @@
             </div>
         </div>
     </footer>
-
     <!-- ===== WHATSAPP FLOATING BUTTON ===== -->
     <a href="https://wa.me/918500900658" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
-
+    
     <!-- ===== JAVASCRIPT ===== -->
     <script>
-        // Hamburger Menu
+        // Hamburger Menu functionality
         function toggleMenu() {
             document.getElementById('navLinks').classList.toggle('active');
         }
         function closeMenu() {
-            document.getElementById('navLinks').classList.remove('active
+            document.getElementById('navLinks').classList.remove('active');
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ===== FORM SUBMISSION TO WHATSAPP =====
+        document.getElementById('enrollForm').addEventListener('submit', function(event) {
+            // 1. Prevent the page from refreshing on form submit
+            event.preventDefault(); 
+
+            // 2. Gather values from the form inputs
+            const studentName = document.getElementById('studentName').value.trim();
+            const parentName = document.getElementById('parentName').value.trim() || 'Not provided';
+            const phone = document.getElementById('phone').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const studentClass = document.getElementById('studentClass').value;
+            const board = document.getElementById('board').value;
+
+            // 3. Construct the message
+            const message = `Hello DhyanshEdu! I would like to book a free demo class.\n\n*Student Name:* ${studentName}\n*Parent Name:* ${parentName}\n*Phone:* ${phone}\n*Email:* ${email}\n*Class:* ${studentClass}\n*Board:* ${board}`;
+
+            // 4. Encode the message so it's safe to use in a URL
+            const encodedMessage = encodeURIComponent(message);
+
+            // 5. Specify the WhatsApp phone number (No +, spaces, or dashes)
+            const whatsappNumber = '918500900658';
+
+            // 6. Build the final URL
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+            // 7. Open WhatsApp in a new tab/window
+            window.open(whatsappUrl, '_blank');
+
+            // 8. Clear the form after sending
+            this.reset();
+        });
+    </script>
+</body>
+</html>
