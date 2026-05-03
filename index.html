@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DhyanshEdu | Maths Made Clear. Results Made Simple.</title>
-    <meta name="description" content="DhyanshEdu helps students master Maths with focus, clarity, and consistent practice. Live classes for Class 6-12, CBSE, ICSE, JEE, AUS & US curricula.">
+    <title>DhyanshEdu | Dhyan Today. Math Better Tomorrow.</title>
+    <meta name="description" content="DhyanshEdu helps students master Maths with focus, clarity, and consistent practice.">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <!-- Font Awesome Icons -->
@@ -22,7 +22,6 @@
             --gradient-dark: linear-gradient(135deg, #0a1628 0%, #1a2d50 50%, #0f2140 100%);
             --gradient-gold: linear-gradient(135deg, #d4a017, #f0c040);
             --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.2);
             --shadow-gold: 0 5px 30px rgba(212, 160, 23, 0.3);
         }
         * {
@@ -39,7 +38,8 @@
             overflow-x: hidden;
             background: var(--primary-dark);
         }
-        /* ===== NAVBAR — FIXED ===== */
+
+        /* ===== FIXED NAVBAR ===== */
         .navbar {
             position: fixed;
             top: 0;
@@ -152,7 +152,8 @@
             border-radius: 3px;
             transition: all 0.3s ease;
         }
-        /* ===== HERO SECTION ===== */
+
+        /* ===== HERO SECTION (REFINED WITH IMAGE FIX) ===== */
         .hero {
             min-height: 100vh;
             background: var(--gradient-dark);
@@ -172,17 +173,29 @@
             background: radial-gradient(circle, rgba(212,160,23,0.08) 0%, transparent 70%);
             border-radius: 50%;
         }
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
+            bottom: -50px;
+            left: -50px;
+            border-radius: 50%;
+            pointer-events: none;
+        }
         .math-float {
             position: absolute;
             font-size: 20px;
             color: rgba(212,160,23,0.1);
             font-weight: 700;
+            pointer-events: none;
             animation: floatMath 6s ease-in-out infinite;
         }
-        .math-float:nth-child(1) { top: 15%; left: 5%; animation-delay: 0s; }
-        .math-float:nth-child(2) { top: 25%; right: 8%; animation-delay: 1s; font-size: 16px; }
+        .math-float:nth-child(1) { top: 15%; left: 5%; animation-delay: 0s; font-size: 22px; }
+        .math-float:nth-child(2) { top: 25%; right: 8%; animation-delay: 1s; font-size: 18px; }
         .math-float:nth-child(3) { bottom: 30%; left: 8%; animation-delay: 2s; font-size: 24px; }
-        .math-float:nth-child(4) { top: 60%; right: 15%; animation-delay: 3s; }
+        .math-float:nth-child(4) { top: 60%; right: 15%; animation-delay: 3s; font-size: 20px; }
         .math-float:nth-child(5) { bottom: 15%; right: 25%; animation-delay: 1.5s; font-size: 18px; }
         @keyframes floatMath {
             0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.15; }
@@ -217,10 +230,6 @@
             font-weight: 800;
             line-height: 1.1;
             margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
             animation: fadeInUp 0.8s ease 0.2s both;
         }
         .hero h1 .gold { color: var(--accent-gold); display: block; }
@@ -239,6 +248,9 @@
             margin-bottom: 35px;
             max-width: 500px;
             animation: fadeInUp 0.8s ease 0.4s both;
+        }
+        .hero p strong {
+            color: var(--white);
         }
         .hero-buttons {
             display: flex;
@@ -285,41 +297,58 @@
             color: var(--accent-gold);
             transform: translateY(-3px);
         }
+
+        /* ===== HERO IMAGE — FIXED HEIGHT ISSUE ===== */
         .hero-image {
             position: relative;
             display: flex;
             justify-content: center;
+            align-items: center;
+            min-height: 450px;
             animation: fadeInRight 1s ease 0.3s both;
         }
         .hero-image-wrapper {
             position: relative;
-            width: 450px;
-            height: 450px;
+            width: 420px;
+            height: 480px;
+            min-height: 400px;
             border-radius: 30px;
             overflow: hidden;
             background: linear-gradient(135deg, #1a2d50, #0f2140);
             box-shadow: var(--shadow-lg);
+            border: 3px solid rgba(212,160,23,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .hero-image-placeholder {
+        .hero-image-wrapper img {
             width: 100%;
             height: 100%;
-            display: flex;
+            object-fit: cover;
+            display: block;
+        }
+        /* Fallback placeholder if image fails */
+        .image-placeholder {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 15px;
-            color: var(--text-gray);
         }
-        .hero-image-placeholder i {
-            font-size: 80px;
+        .image-placeholder i {
+            font-size: 5rem;
+            margin-bottom: 15px;
             color: var(--accent-gold);
-            opacity: 0.5;
         }
-        .hero-image-placeholder span { font-size: 14px; }
+        .image-placeholder p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        /* ===== FLOATING STATS ===== */
         .float-stat {
             position: absolute;
             background: rgba(10, 22, 40, 0.9);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             padding: 15px 20px;
             border-radius: 15px;
             border: 1px solid rgba(212,160,23,0.2);
@@ -327,9 +356,10 @@
             align-items: center;
             gap: 12px;
             animation: floatBounce 3s ease-in-out infinite;
+            z-index: 3;
         }
         .float-stat:nth-child(2) { top: 10%; right: -30px; animation-delay: 0.5s; }
-        .float-stat:nth-child(3) { bottom: 15%; left: -40px; animation-delay: 1s; }
+        .float-stat:nth-child(3) { bottom: 20%; left: -40px; animation-delay: 1s; }
         .float-stat:nth-child(4) { bottom: -10px; right: 20px; animation-delay: 1.5s; }
         .float-stat .stat-icon {
             width: 40px;
@@ -352,10 +382,15 @@
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         @keyframes fadeInRight {
             from { opacity: 0; transform: translateX(50px); }
             to { opacity: 1; transform: translateX(0); }
         }
+
         /* ===== SECTION COMMON STYLES ===== */
         .section-container {
             max-width: 1200px;
@@ -390,6 +425,7 @@
             max-width: 600px;
             margin: 0 auto;
         }
+
         /* ===== FEATURES SECTION ===== */
         .features {
             padding: 100px 0;
@@ -465,6 +501,7 @@
             color: var(--text-gray);
             line-height: 1.6;
         }
+
         /* ===== MENTOR SECTION ===== */
         .mentor {
             padding: 100px 0;
@@ -488,20 +525,15 @@
             background: linear-gradient(135deg, rgba(26,45,80,0.6), rgba(15,33,64,0.8));
             border: 2px solid rgba(212,160,23,0.2);
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 15px;
             position: relative;
         }
-        .mentor-photo i {
-            font-size: 100px;
-            color: var(--accent-gold);
-            opacity: 0.4;
-        }
-        .mentor-photo span {
-            font-size: 13px;
-            color: var(--text-gray);
+        .mentor-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
         .mentor-badge-float {
             position: absolute;
@@ -588,6 +620,7 @@
             align-items: center;
             gap: 6px;
         }
+
         /* ===== BOARDS SECTION ===== */
         .boards {
             padding: 100px 0;
@@ -614,6 +647,7 @@
         .board-card .board-icon { font-size: 36px; margin-bottom: 15px; }
         .board-card h3 { font-size: 20px; font-weight: 700; color: var(--accent-gold); margin-bottom: 8px; }
         .board-card p { font-size: 13px; color: var(--text-gray); }
+
         /* ===== TESTIMONIALS ===== */
         .testimonials {
             padding: 100px 0;
@@ -666,6 +700,7 @@
         }
         .testimonial-author h4 { font-size: 15px; font-weight: 600; }
         .testimonial-author p { font-size: 13px; color: var(--text-gray); }
+
         /* ===== CTA SECTION ===== */
         .cta-section {
             padding: 100px 0;
@@ -698,6 +733,7 @@
             flex-wrap: wrap;
             position: relative;
         }
+
         /* ===== CONTACT / FORM SECTION ===== */
         .contact {
             padding: 100px 0;
@@ -736,30 +772,6 @@
         .contact-item div p { font-size: 14px; color: var(--text-gray); }
         .contact-item div a { font-size: 14px; color: var(--text-gray); text-decoration: none; transition: color 0.3s ease; }
         .contact-item div a:hover { color: var(--accent-gold); }
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 35px;
-        }
-        .social-links a {
-            width: 45px;
-            height: 45px;
-            background: rgba(212,160,23,0.1);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-gold);
-            font-size: 20px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .social-links a:hover {
-            background: var(--gradient-gold);
-            color: var(--primary-dark);
-            transform: translateY(-3px);
-        }
-        /* Contact Form */
         .contact-form {
             background: rgba(10,22,40,0.6);
             border: 1px solid rgba(212,160,23,0.15);
@@ -780,8 +792,7 @@
             margin-bottom: 8px;
         }
         .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-group select {
             width: 100%;
             padding: 14px 18px;
             background: rgba(26,45,80,0.5);
@@ -793,17 +804,14 @@
             transition: border-color 0.3s ease;
             outline: none;
         }
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
+        .form-group input::placeholder {
             color: rgba(176,184,200,0.5);
         }
         .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
+        .form-group select:focus {
             border-color: var(--accent-gold);
         }
         .form-group select option { background: var(--primary-dark); }
-        .form-group textarea { resize: vertical; min-height: 100px; }
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -826,12 +834,7 @@
             transform: translateY(-2px);
             box-shadow: var(--shadow-gold);
         }
-        .error-text {
-            color: #ff4444;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
-        }
+
         /* ===== FOOTER ===== */
         .footer {
             background: #060e1a;
@@ -868,6 +871,7 @@
         }
         .footer-bottom p { color: var(--text-gray); font-size: 14px; }
         .footer-bottom .gold { color: var(--accent-gold); }
+
         /* ===== WHATSAPP FLOATING BUTTON ===== */
         .whatsapp-float {
             position: fixed;
@@ -897,6 +901,7 @@
             70% { box-shadow: 0 0 0 15px rgba(37,211,102,0); }
             100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
         }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
             .hero h1 { font-size: 42px; }
@@ -933,7 +938,7 @@
             .hero p { margin: 0 auto 35px; }
             .hero-buttons { justify-content: center; }
             .hero-image { order: -1; }
-            .hero-image-wrapper { width: 300px; height: 300px; }
+            .hero-image-wrapper { width: 300px; height: 350px; min-height: 300px; margin: 0 auto; }
             .float-stat { display: none; }
             .features-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
             .boards-grid { grid-template-columns: repeat(2, 1fr); }
@@ -951,6 +956,8 @@
         }
         @media (max-width: 480px) {
             .hero h1 { font-size: 30px; }
+            .hero-tagline { font-size: 18px; }
+            .hero-image-wrapper { width: 260px; height: 320px; min-height: 280px; }
             .boards-grid { grid-template-columns: 1fr; max-width: 300px; margin: 0 auto; }
             .hero-buttons { flex-direction: column; align-items: center; }
             .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
@@ -958,6 +965,7 @@
     </style>
 </head>
 <body>
+
     <!-- ===== NAVBAR (FIXED) ===== -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
@@ -984,7 +992,7 @@
         </div>
     </nav>
 
-    <!-- ===== HERO SECTION ===== -->
+    <!-- ===== HERO SECTION (REFINED — IMAGE FIX APPLIED) ===== -->
     <section class="hero" id="home">
         <span class="math-float">y = mx + c</span>
         <span class="math-float">a² + b² = c²</span>
@@ -997,12 +1005,10 @@
                     <i class="fa-solid fa-graduation-cap"></i>
                     Maths | Class 6–12
                 </div>
-                <!-- Banner Title with Logo Removed Here -->
                 <h1>
-                    Welcome to 
-                    <span class="gold">DhyanshEdu</span>
+                    Welcome to <span class="gold">DhyanshEdu</span>
                 </h1>
-                <p class="hero-tagline">Maths Made Clear. Results Made Simple.</p>
+                <p class="hero-tagline">Dhyan Today. Math Better Tomorrow.</p>
                 <p>We help students master Maths with <strong>focus</strong>, <strong>clarity</strong>, and <strong>consistent practice</strong>. Interactive live classes designed to build deep understanding and deliver real results.</p>
                 <div class="hero-buttons">
                     <a href="#contact" class="btn-primary">
@@ -1017,10 +1023,12 @@
             </div>
             <div class="hero-image">
                 <div class="hero-image-wrapper">
-                    <!-- Replace placeholder with: <img src="hero-image.jpg" alt="DhyanshEdu Student"> -->
-                    <div class="hero-image-placeholder">
-                        <i class="fa-solid fa-user-graduate"></i>
-                        <span>Add your hero image here</span>
+                    <!-- ✅ Image with automatic fallback placeholder -->
+                    <img src="hero-image.png" alt="DhyanshEdu Student"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="image-placeholder" style="display:none;">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                        <p>Add your image as<br><strong>hero-image.png</strong></p>
                     </div>
                 </div>
                 <div class="float-stat">
@@ -1083,50 +1091,39 @@
             <div class="mentor-grid">
                 <div class="mentor-photo-wrapper">
                     <div class="mentor-photo">
-                        <i class="fa-solid fa-chalkboard-user"></i>
-                        <span>Add mentor photo here</span>
-                        <!-- Replace with: <img src="mentor-photo.jpg" alt="Mounika - Maths Mentor"> -->
+                        <img src="mentor-photo.png" alt="Mounika - Maths Mentor"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="image-placeholder" style="display:none;">
+                            <i class="fa-solid fa-user-tie"></i>
+                            <p>Add image as<br><strong>mentor-photo.png</strong></p>
+                        </div>
                     </div>
                     <div class="mentor-badge-float">⭐ IIT JEE Maths Expert</div>
                 </div>
                 <div class="mentor-content">
-                    <h2>Hi, I'm <span class="gold">Mounika</span> </h2>
-                    <p class="mentor-title">Mathematics Faculty & Founder, DhyanshEdu | Bengaluru, Karnataka </p>
-                    <p>Passionate and experienced Mathematics educator with a strong background in preparing students for the IIT JEE examination . I bring concept-first teaching, personalized mentoring, and years of experience across multiple curricula including CBSE, ICSE, JEE, and the Australian curriculum [1].</p>
+                    <h2>Hi, I'm <span class="gold">Mounika</span></h2>
+                    <p class="mentor-title">Mathematics Faculty & IIT JEE Expert | Bengaluru, Karnataka</p>
+                    <p>Passionate and experienced Mathematics educator with a strong background in preparing students for the IIT JEE examination. I bring concept-first teaching, personalized mentoring, and years of experience across multiple curricula including CBSE and the Australian curriculum.</p>
                     <div class="mentor-highlights">
                         <div class="mentor-highlight-item">
                             <div class="mh-icon"><i class="fa-solid fa-building-columns"></i></div>
                             <div>
-                                <h4>T.I.M.E Institute </h4>
-                                <p>Math Faculty for IIT JEE (2019–2021) </p>
+                                <h4>T.I.M.E Institute</h4>
+                                <p>Math Faculty for IIT JEE (2019–2021)</p>
                             </div>
                         </div>
                         <div class="mentor-highlight-item">
                             <div class="mh-icon"><i class="fa-solid fa-globe"></i></div>
                             <div>
-                                <h4>Eduflare, Australia </h4>
-                                <p>Online Maths Tutor (2023–Present) </p>
-                            </div>
-                        </div>
-                        <div class="mentor-highlight-item">
-                            <div class="mh-icon"><i class="fa-solid fa-brain"></i></div>
-                            <div>
-                                <h4>Curriculum Design</h4>
-                                <p>Custom lesson plans for every learning style</p>
-                            </div>
-                        </div>
-                        <div class="mentor-highlight-item">
-                            <div class="mh-icon"><i class="fa-solid fa-handshake-angle"></i></div>
-                            <div>
-                                <h4>1-on-1 Mentoring</h4>
-                                <p>Individual guidance for academic challenges</p>
+                                <h4>Eduflare, Australia</h4>
+                                <p>Online Maths Tutor (2023–Present)</p>
                             </div>
                         </div>
                     </div>
                     <div class="mentor-education">
                         <div class="edu-tag">
                             <i class="fa-solid fa-graduation-cap"></i>
-                            M.Tech — NIT Calicut (2019) 
+                            M.Tech — NIT Calicut (2019)
                         </div>
                         <div class="edu-tag">
                             <i class="fa-solid fa-graduation-cap"></i>
@@ -1239,7 +1236,7 @@
         </div>
     </section>
 
-    <!-- ===== CONTACT SECTION WITH COMPLETED FORM & CAPTURE ===== -->
+    <!-- ===== CONTACT SECTION ===== -->
     <section class="contact" id="contact">
         <div class="section-container">
             <div class="contact-grid">
@@ -1252,27 +1249,25 @@
                             <div class="icon"><i class="fa-solid fa-phone"></i></div>
                             <div>
                                 <h4>Phone</h4>
-                                <a href="tel:+918500900658">+91-8500900658 </a>
+                                <a href="tel:+918500900658">+91-8500900658</a>
                             </div>
                         </div>
                         <div class="contact-item">
                             <div class="icon"><i class="fa-solid fa-envelope"></i></div>
                             <div>
                                 <h4>Email</h4>
-                                <a href="mailto:dhyanshedu@gmail.com">dhyanshedu@gmail.com </a>
+                                <a href="mailto:dhyanshedu@gmail.com">dhyanshedu@gmail.com</a>
                             </div>
                         </div>
                         <div class="contact-item">
                             <div class="icon"><i class="fa-solid fa-location-dot"></i></div>
                             <div>
                                 <h4>Location</h4>
-                                <p>Bengaluru, Karnataka (Online Classes) </p>
+                                <p>Bengaluru, Karnataka (Online Classes)</p>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- FIXED & COMPLETED FORM WITH DATA CAPTURE -->
                 <div class="contact-form" id="formContainer">
                     <h3>📝 Book a Free Demo Class</h3>
                     <form id="enrollForm">
@@ -1381,53 +1376,11 @@
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <!-- ===== JAVASCRIPT FOR NAVBAR & FORM CAPTURE ===== -->
+    <!-- ===== JAVASCRIPT ===== -->
     <script>
-        // Hamburger Menu functionality
+        // Hamburger Menu
         function toggleMenu() {
             document.getElementById('navLinks').classList.toggle('active');
         }
         function closeMenu() {
-            document.getElementById('navLinks').classList.remove('active');
-        }
-
-        // Navbar scrolled state
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // Form Submission Logic
-        document.getElementById('enrollForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Stop standard form submission
-
-            // Capture data from fields
-            const studentName = document.getElementById('studentName').value;
-            const parentName = document.getElementById('parentName').value || 'Not provided';
-            const phone = document.getElementById('phone').value;
-            const email = document.getElementById('email').value;
-            const studentClass = document.getElementById('studentClass').value;
-            const board = document.getElementById('board').value;
-            
-            // Note: messageText logic was removed as requested format did not include the message box. 
-
-            // Construct message text to send to WhatsApp
-            const whatsappMsg = `Hello DhyanshEdu! I would like to book a free demo class.\n\n*Student Name:* ${studentName}\n*Parent Name:* ${parentName}\n*Phone:* ${phone}\n*Email:* ${email}\n*Class:* ${studentClass}\n*Board:* ${board}`;
-            
-            // Format URL to open WhatsApp with the pre-filled message (Phone number from context )
-            const targetNumber = "918500900658"; 
-            const whatsappUrl = `https://wa.me/${targetNumber}?text=${encodeURIComponent(whatsappMsg)}`;
-            
-            // Open WhatsApp in a new tab
-            window.open(whatsappUrl, '_blank');
-            
-            // Reset form
-            this.reset();
-        });
-    </script>
-</body>
-</html>
+            document.getElementById('navLinks').classList.remove('active
