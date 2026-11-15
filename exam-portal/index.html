@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="DhyanshEdu examination portal">
+  <title>DhyanshEdu | Exam Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main id="app">
+    <section id="login-view" class="login-shell">
+      <div class="login-brand">
+        <a class="brand" href="https://dhyanshedu.com" aria-label="DhyanshEdu home">
+          <span class="brand-mark">D</span><span>Dhyansh<span class="gold">Edu</span></span>
+        </a>
+        <div class="login-copy">
+          <p class="eyebrow">LEARN · PRACTICE · EXCEL</p>
+          <h1>Your learning journey,<br><span>one test at a time.</span></h1>
+          <p class="muted">A dedicated space for students, teachers and administrators.</p>
+          <div class="login-points">
+            <div><span class="point-icon">✓</span> Practice and scheduled examinations</div>
+            <div><span class="point-icon">✓</span> Progress and performance insights</div>
+            <div><span class="point-icon">✓</span> Secure role-based access</div>
+          </div>
+        </div>
+        <p class="copyright">© <span id="year"></span> DhyanshEdu</p>
+      </div>
+      <div class="login-panel">
+        <div class="login-card">
+          <div class="mobile-brand brand"><span class="brand-mark">D</span><span>Dhyansh<span class="gold">Edu</span></span></div>
+          <p class="eyebrow">EXAM PORTAL</p>
+          <h2>Welcome back</h2>
+          <p class="muted">Sign in with the account provided to you.</p>
+          <form id="login-form">
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" autocomplete="username" placeholder="you@example.com" required>
+            <label for="password">Password</label>
+            <div class="password-wrap">
+              <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+              <button type="button" class="show-password" id="toggle-password">Show</button>
+            </div>
+            <button class="btn btn-primary full" id="login-button" type="submit">Sign in <span>→</span></button>
+            <p id="login-message" class="message" role="status"></p>
+          </form>
+          <div class="login-foot"><a href="https://dhyanshedu.com">← Back to DhyanshEdu website</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboard-view" class="dashboard hidden">
+      <aside class="sidebar">
+        <a class="brand side-brand" href="#"><span class="brand-mark">D</span><span>Dhyansh<span class="gold">Edu</span></span></a>
+        <p class="side-label">WORKSPACE</p>
+        <nav>
+          <a class="nav-item active" href="#overview"><span>▦</span> Overview</a>
+          <a class="nav-item" href="#teachers"><span>♙</span> Teachers</a>
+          <a class="nav-item" href="#students"><span>♧</span> Students</a>
+          <a class="nav-item" href="#exams"><span>▤</span> Examinations</a>
+          <a class="nav-item" href="#results"><span>◷</span> Results</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="secure-note"><span>●</span><div><b>Secure workspace</b><small>Role-based access enabled</small></div></div>
+          <button id="signout-button" class="signout">↪ Sign out</button>
+        </div>
+      </aside>
+      <section class="main-area">
+        <header class="topbar">
+          <div><p class="eyebrow">DHYANSHEDU / ADMINISTRATION</p><h1 id="welcome-title">Dashboard</h1></div>
+          <div class="user-chip"><span class="avatar" id="avatar">A</span><span><b id="user-name">Administrator</b><small id="user-role">Admin</small></span></div>
+        </header>
+        <div class="content">
+          <div class="welcome-banner">
+            <div><p class="eyebrow light">YOUR LEARNING PLATFORM</p><h2>Good to have you here.</h2><p>Here’s an overview of your DhyanshEdu examination workspace.</p></div>
+            <div class="banner-symbol">D<span>.</span></div>
+          </div>
+          <div class="section-heading"><div><h2>Platform overview</h2><p class="muted">Live counts from your Supabase database</p></div><span class="live-tag"><i></i> Connected</span></div>
+          <div class="stats-grid">
+            <article class="stat-card"><div class="stat-icon purple">♙</div><p>Total teachers</p><strong id="teacher-count">—</strong><small>Registered teacher profiles</small></article>
+            <article class="stat-card"><div class="stat-icon blue">♧</div><p>Total students</p><strong id="student-count">—</strong><small>Registered student profiles</small></article>
+            <article class="stat-card"><div class="stat-icon gold-bg">▤</div><p>Examinations</p><strong id="exam-count">—</strong><small>Across all subjects</small></article>
+            <article class="stat-card"><div class="stat-icon green">◷</div><p>Exam attempts</p><strong id="attempt-count">—</strong><small>Student attempts recorded</small></article>
+          </div>
+          <div class="section-heading lower"><div><h2>Getting started</h2><p class="muted">Your next setup milestones</p></div></div>
+          <div class="setup-grid">
+            <article class="setup-card"><span class="setup-number">01</span><div><h3>Teacher accounts</h3><p>Create teacher accounts through a secure server function and approve access.</p><span class="status-pill pending">Backend setup required</span></div></article>
+            <article class="setup-card"><span class="setup-number">02</span><div><h3>Question bank</h3><p>Build subject-wise questions for MCQ, numerical and descriptive exams.</p><span class="status-pill pending">Coming next</span></div></article>
+            <article class="setup-card"><span class="setup-number">03</span><div><h3>Student examinations</h3><p>Enable timed tests, submissions, evaluation and result reporting.</p><span class="status-pill pending">Coming next</span></div></article>
+          </div>
+          <p id="dashboard-message" class="message"></p>
+          <footer class="page-footer">DhyanshEdu Exam Portal <span>·</span> Built for focused learning</footer>
+        </div>
+      </section>
+    </section>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
