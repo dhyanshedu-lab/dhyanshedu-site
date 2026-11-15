@@ -2,8 +2,8 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 // Add your Supabase Project URL and publishable (anon) key below.
 // Never put a secret/service_role key in browser code or GitHub.
-const SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL";
-const SUPABASE_PUBLISHABLE_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY";
+const SUPABASE_URL = "https://vxifxiuitprdafvgpojh.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_WbeQeyK02QCDwayhi2NMjw_T-gOIpxG";
 
 const loginView = document.querySelector("#login-view");
 const dashboardView = document.querySelector("#dashboard-view");
