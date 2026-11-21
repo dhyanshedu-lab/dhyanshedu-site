@@ -137,6 +137,45 @@
         .nav-cta::after {
             display: none !important;
         }
+        .login-dropdown { position: relative; }
+        .login-dropdown > summary {
+            list-style: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+        }
+        .login-dropdown > summary::-webkit-details-marker { display: none; }
+        .login-dropdown > summary i { font-size: 11px; }
+        .login-options {
+            position: absolute;
+            top: calc(100% + 14px);
+            right: 0;
+            min-width: 205px;
+            padding: 9px;
+            border: 1px solid rgba(212,160,23,0.28);
+            border-radius: 14px;
+            background: #101f38;
+            box-shadow: var(--shadow-lg);
+            z-index: 1100;
+        }
+        .login-options a {
+            display: block;
+            padding: 11px 13px;
+            border-radius: 9px;
+            color: var(--white) !important;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .login-options a:hover { background: rgba(212,160,23,0.14); color: var(--accent-gold-light) !important; }
+        .login-options a::after { display: none !important; }
+        .login-options p {
+            padding: 9px 13px 5px;
+            color: var(--text-gray);
+            font-size: 11px;
+            line-height: 1.5;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
         .hamburger {
             display: none;
             flex-direction: column;
@@ -969,7 +1008,17 @@
                 <li><a href="#testimonials" onclick="closeMenu()">Reviews</a></li>
                 <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
                 <li><a href="#contact" class="nav-cta" onclick="closeMenu()">Enroll Now</a></li>
-                <li><a href="https://dhyanshedu-exam-portal.pages.dev" class="nav-cta" onclick="closeMenu()">Student / Teacher Login</a></li>
+                <li class="login-menu-item">
+                    <details class="login-dropdown">
+                        <summary class="nav-cta login-trigger">Login <i class="fa-solid fa-chevron-down"></i></summary>
+                        <div class="login-options">
+                            <a href="https://dhyanshedu-exam-portal.pages.dev" onclick="closeMenu()">Admin Login</a>
+                            <a href="https://dhyanshedu-exam-portal.pages.dev" onclick="closeMenu()">Teacher Login</a>
+                            <a href="https://dhyanshedu-exam-portal.pages.dev" onclick="closeMenu()">Student Login</a>
+                            <p>Sign in with your assigned account. Access is based on your approved role.</p>
+                        </div>
+                    </details>
+                </li>
             </ul>
             <div class="hamburger" id="hamburger" onclick="toggleMenu()">
                 <span></span>
@@ -1325,7 +1374,7 @@
                         <li><a href="#features">Features</a></li>
                         <li><a href="#mentor">Mentor</a></li>
                         <li><a href="#contact">Contact</a></li>
-                        <li><a href="https://dhyanshedu-exam-portal.pages.dev">Student / Teacher Portal Login</a></li>
+                        <li><a href="https://dhyanshedu-exam-portal.pages.dev">Portal Login (Admin / Teacher / Student)</a></li>
                     </ul>
                 </div>
                 <div>
