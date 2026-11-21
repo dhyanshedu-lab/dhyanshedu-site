@@ -1270,7 +1270,17 @@
                                 <input type="email" id="email" name="email" placeholder="Enter email address" required>
                             </div>
                         </div>
-                        <div class="form-row">
+                                                <div class="form-row">
+                            <div class="form-group">
+                                <label for="learningMode">Preferred learning mode *</label>
+                                <select id="learningMode" name="learningMode" required>
+                                    <option value="">Select learning mode</option>
+                                    <option value="group">Group classes</option>
+                                    <option value="one_to_one">One-to-one classes</option>
+                                </select>
+                            </div>
+                        </div>
+<div class="form-row">
                             <div class="form-group">
                                 <label for="studentClass">Class *</label>
                                 <select id="studentClass" name="studentClass" required>
@@ -1296,7 +1306,22 @@
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" class="form-submit">
+                        
+                        <div class="form-group">
+                            <label for="enquiryMessage">Anything else we should know? (Optional)</label>
+                            <input type="text" id="enquiryMessage" name="enquiryMessage" maxlength="1000" placeholder="Topics, goals or preferred timings">
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" id="privacyAccepted" required style="width:auto;min-height:auto;margin-right:8px"> I have read and acknowledge the privacy notice. *</label>
+                            <small>We will use these details to respond to your enquiry and coordinate the requested demo.</small>
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" id="marketingConsent" style="width:auto;min-height:auto;margin-right:8px"> I agree to receive optional learning updates and announcements.</label>
+                        </div>
+                        <div class="form-group" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden">
+                            <label for="website">Leave this field empty</label><input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                        </div>
+<button type="submit" class="form-submit">
                             <i class="fa-solid fa-paper-plane"></i> Book Free Demo Class
                         </button>
                     </form>
@@ -1373,36 +1398,58 @@
             }
         });
 
-        // ===== FORM SUBMISSION TO WHATSAPP =====
-        document.getElementById('enrollForm').addEventListener('submit', function(event) {
-            // 1. Prevent the page from refreshing on form submit
-            event.preventDefault(); 
-
-            // 2. Gather values from the form inputs
+        // ===== SEND ENQUIRY TO DHYANSHEDU PORTAL =====
+        const ENQUIRY_API_URL = 'https://dhyanshedu-api.dhyanshedu.workers.dev/api/public/enquiries';
+        document.getElementById('enrollForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const form = this;
+            const button = form.querySelector('button[type="submit"]');
+            const messageBox = document.getElementById('enquirySubmitMessage') || document.createElement('p');
+            messageBox.id = 'enquirySubmitMessage';
+            messageBox.setAttribute('role', 'status');
+            messageBox.setAttribute('aria-live', 'polite');
+            if (!messageBox.isConnected) form.appendChild(messageBox);
             const studentName = document.getElementById('studentName').value.trim();
-            const parentName = document.getElementById('parentName').value.trim() || 'Not provided';
-            const phone = document.getElementById('phone').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const studentClass = document.getElementById('studentClass').value;
             const board = document.getElementById('board').value;
-
-            // 3. Construct the message
-            const message = `Hello DhyanshEdu! I would like to book a free demo class.\n\n*Student Name:* ${studentName}\n*Parent Name:* ${parentName}\n*Phone:* ${phone}\n*Email:* ${email}\n*Class:* ${studentClass}\n*Board:* ${board}`;
-
-            // 4. Encode the message so it's safe to use in a URL
-            const encodedMessage = encodeURIComponent(message);
-
-            // 5. Specify the WhatsApp phone number (No +, spaces, or dashes)
-            const whatsappNumber = '918500900658';
-
-            // 6. Build the final URL
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-
-            // 7. Open WhatsApp in a new tab/window
-            window.open(whatsappUrl, '_blank');
-
-            // 8. Clear the form after sending
-            this.reset();
+            const note = document.getElementById('enquiryMessage').value.trim();
+            const payload = {
+                student_name: studentName,
+                parent_name: document.getElementById('parentName').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                class_label: 'Class ' + document.getElementById('studentClass').value,
+                learning_mode: document.getElementById('learningMode').value,
+                message: [board && board !== 'Not specified' ? 'Curriculum / pathway: ' + board : '', note].filter(Boolean).join('\n'),
+                privacy_accepted: document.getElementById('privacyAccepted').checked,
+                privacy_notice_version: 'website-v1',
+                marketing_consent: document.getElementById('marketingConsent').checked,
+                website: document.getElementById('website').value
+            };
+            button.disabled = true;
+            button.textContent = 'Sending request…';
+            messageBox.textContent = '';
+            try {
+                const response = await fetch(ENQUIRY_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok) throw new Error(result.error || 'We could not submit your request. Please try again.');
+                form.reset();
+                messageBox.textContent = 'Thank you! Your enquiry has been received. Our team will contact you to confirm a suitable free demo time.';
+                const whatsappLink = document.createElement('a');
+                whatsappLink.href = 'https://wa.me/918500900658?text=' + encodeURIComponent('Hello DhyanshEdu, I have submitted an enquiry for ' + studentName + '. Please help me with the next steps.');
+                whatsappLink.target = '_blank';
+                whatsappLink.rel = 'noopener noreferrer';
+                whatsappLink.textContent = ' You can also message us on WhatsApp.';
+                messageBox.appendChild(whatsappLink);
+            } catch (error) {
+                messageBox.textContent = error.message + ' You can also contact us on WhatsApp at +91-8500900658.';
+            } finally {
+                button.disabled = false;
+                button.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Book Free Demo Class';
+            }
         });
     </script>
 </body>
