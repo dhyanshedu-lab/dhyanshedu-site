@@ -1,0 +1,29 @@
+name: Validate free exams page
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "free-exams.html"
+      - "index.html"
+      - ".github/workflows/validate-free-exams.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Check public exam page JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          import re
+          source = open("free-exams.html", encoding="utf-8").read()
+          scripts = re.findall(r"<script>(.*?)</script>", source, flags=re.S)
+          if len(scripts) != 1:
+              raise SystemExit("Expected exactly one inline application script")
+          open("/tmp/free-exams.js", "w", encoding="utf-8").write(scripts[0])
+          PY
+          node --check /tmp/free-exams.js
