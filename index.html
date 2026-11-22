@@ -1015,8 +1015,8 @@
         .course-enquire { display: block; margin-top: auto; text-align: center; color: var(--primary-dark); background: var(--gradient-gold); font-size: 11px; font-weight: 700; padding: 10px 8px; border-radius: 30px; text-decoration: none; transition: transform .2s ease, box-shadow .2s ease; }
         .course-enquire:hover { transform: translateY(-2px); box-shadow: var(--shadow-gold); text-decoration: none; }
         .course-format-unavailable { color: var(--text-gray); font-size: 11px; padding: 10px 0; }
-            <p class="course-disclaimer"><i class="fa-solid fa-circle-info"></i> USD is shown first as an indicative conversion using the latest available exchange rate; INR is the base price and remains unchanged. Prices are per student for each 60-minute live session. International students are welcome—contact us for a local-currency quotation.</p>
-            <p class="course-disclaimer"><i class="fa-solid fa-circle-info"></i> USD is shown first as an indicative conversion using the latest available exchange rate; INR is the base price and remains unchanged. Prices are per student for each 60-minute live session. International students are welcome—contact us for a local-currency quotation.</p>
+        .course-disclaimer { margin: 24px auto 0; max-width: 900px; text-align: center; color: #c8d0df; font-size: 12px; line-height: 1.7; }
+        .course-disclaimer i { color: var(--accent-gold-light); margin-right: 5px; }
         .course-select-group { margin-bottom: 18px; }
         @media (max-width: 900px) { .courses-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         @media (max-width: 600px) { .courses { padding: 68px 0 74px; } .courses-grid { grid-template-columns: 1fr; gap: 16px; } .course-card { padding: 24px; } .course-card > p { min-height: 0; } }
@@ -1500,173 +1500,14 @@
         }
         function publicUsdLabel(inrAmount) {
             if (!publicInrUsdRate) return 'USD temporarily unavailable';
-            return '
-            const container = document.getElementById('public-fee-plans');
-            const select = document.getElementById('courseInterest');
-            if (!container || !select) return;
-            try {
-                await refreshPublicInrUsdRate();
-                const response = await fetch('https://dhyanshedu-api-proxy.dhyanshedu.workers.dev/api/public/fee-plans');
-                const result = await response.json().catch(() => ({}));
-                if (!response.ok || !result.success) throw new Error(result.error || 'Fees are temporarily unavailable.');
-
-                select.replaceChildren(new Option('Select a published fee option (optional)', ''));
-                container.replaceChildren();
-                const groups = new Map();
-                (result.fee_plans || []).forEach(plan => {
-                    const match = (plan.name || '').match(/Classes\s+([0-9]+\s*[–-]\s*[0-9]+)/i);
-                    const range = match ? match[1].replace(/\s+/g, '') : (plan.name || 'Maths Programme');
-                    if (!groups.has(range)) groups.set(range, []);
-                    groups.get(range).push(plan);
-
-                    const format = plan.batch_type === 'one_to_one' ? 'One-to-one' : 'Small group (4–5 students)';
-                    const price = Number(plan.amount_paise || 0) / 100;
-                    const formatted = '₹' + price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                    const usdFormatted = publicUsdLabel(price);
-                    const option = document.createElement('option');
-                    option.value = plan.id;
-                    option.textContent = plan.name + ' · ' + format + ' · ' + usdFormatted + ' · ' + formatted + '/hour';
-                    option.dataset.format = plan.batch_type;
-                    option.dataset.name = plan.name;
-                    select.append(option);
-                });
-
-                groups.forEach((plans, range) => {
-                    const card = document.createElement('article');
-                    card.className = 'course-card';
-                    const top = document.createElement('div');
-                    top.className = 'course-top';
-                    const level = document.createElement('span');
-                    level.className = 'course-level';
-                    level.textContent = 'MATHEMATICS EXCELLENCE';
-                    const icon = document.createElement('i');
-                    icon.className = 'fa-solid fa-graduation-cap';
-                    top.append(level, icon);
-                    const title = document.createElement('h3');
-                    title.textContent = 'Classes ' + range;
-                    const description = document.createElement('p');
-                    description.textContent = 'Develop clarity, accuracy and confidence through structured, expert-led learning.';
-                    const formats = document.createElement('div');
-                    formats.className = 'course-format-options';
-
-                    [
-                        { type: 'one_to_one', label: 'One-to-one', icon: 'fa-user' },
-                        { type: 'group', label: 'Small group · 4–5 students', icon: 'fa-users' }
-                    ].forEach(info => {
-                        const plan = plans.find(item => info.type === 'one_to_one'
-                            ? item.batch_type === 'one_to_one'
-                            : item.batch_type !== 'one_to_one');
-                        const optionCard = document.createElement('div');
-                        optionCard.className = 'course-format-option';
-                        const heading = document.createElement('h4');
-                        const formatIcon = document.createElement('i');
-                        formatIcon.className = 'fa-solid ' + info.icon;
-                        heading.append(formatIcon, document.createTextNode(info.label));
-                        optionCard.append(heading);
-                        if (plan) {
-                            const price = Number(plan.amount_paise || 0) / 100;
-                            const amount = document.createElement('strong');
-                            amount.className = 'course-format-price';
-                            amount.textContent = publicUsdLabel(price);
-                            const usdAmount = document.createElement('span');
-                            usdAmount.className = 'course-format-usd';
-                            usdAmount.textContent = formatted + ' INR';
-                            const unit = document.createElement('span');
-                            unit.className = 'course-format-unit';
-                            unit.textContent = 'per student · 60 minutes';
-                            const enquire = document.createElement('a');
-                            enquire.className = 'course-enquire';
-                            enquire.href = '#contact';
-                            enquire.dataset.feePlan = plan.id;
-                            enquire.textContent = 'Enquire now';
-                            optionCard.append(amount, usdAmount, unit, enquire);
-                        } else {
-                            const unavailable = document.createElement('span');
-                            unavailable.className = 'course-format-unavailable';
-                            unavailable.textContent = 'Not currently available';
-                            optionCard.append(unavailable);
-                        }
-                        formats.append(optionCard);
-                    });
-                    card.append(top, title, description, formats);
-                    container.append(card);
-                });
-                if (!(result.fee_plans || []).length) {
-                    container.textContent = 'New Maths fee options will be published here shortly. Please contact us for details.';
-                }
-            } catch (error) {
-                container.textContent = 'Current fees could not be loaded. Please contact DhyanshEdu for the latest pricing.';
-            }
+            return String.fromCharCode(36) + Math.ceil(inrAmount * publicInrUsdRate).toLocaleString('en-US');
         }
-        loadPublicFeePlans();
-
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // ===== SAVE WEBSITE ENQUIRY TO DHYANSHEDU PORTAL =====
-        document.getElementById('enrollForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const form = this;
-            const button = form.querySelector('button[type="submit"]');
-            const originalText = button.innerHTML;
-            button.disabled = true;
-            button.textContent = 'Submitting…';
-            let message = document.getElementById('enquirySubmitMessage');
-            if (!message) {
-                message = document.createElement('p');
-                message.id = 'enquirySubmitMessage';
-                message.setAttribute('role', 'status');
-                message.style.marginTop = '12px';
-                form.append(message);
-            }
-            message.textContent = '';
-            const payload = {
-                student_name: document.getElementById('studentName').value.trim(),
-                parent_name: document.getElementById('parentName').value.trim(),
-                phone: document.getElementById('phone').value.trim(),
-                email: document.getElementById('email').value.trim(),
-                student_class: document.getElementById('studentClass').value,
-                board: document.getElementById('board').value,
-                course_interest: document.getElementById('courseInterest').selectedOptions[0]?.dataset.name || '',
-                fee_plan_id: document.getElementById('courseInterest').value || '',
-                learning_format: document.getElementById('courseInterest').selectedOptions[0]?.dataset.format || ''
-            };
-            try {
-                const response = await fetch('https://dhyanshedu-api-proxy.dhyanshedu.workers.dev/api/public/enquiries', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const result = await response.json().catch(() => ({}));
-                if (!response.ok) throw new Error(result.error || 'Could not submit your enquiry. Please try again.');
-                message.textContent = result.message || 'Thank you! Your enquiry has been received.';
-                message.style.color = 'green';
-                form.reset();
-            } catch (error) {
-                message.textContent = error.message + ' You can also call +91-8500900658.';
-                message.style.color = 'crimson';
-            } finally {
-                button.disabled = false;
-                button.innerHTML = originalText;
-            }
-        });
-    </script>
-</body>
-</html> + Math.ceil(inrAmount * publicInrUsdRate).toLocaleString('en-US');
-        }
-
         async function loadPublicFeePlans() {
             const container = document.getElementById('public-fee-plans');
             const select = document.getElementById('courseInterest');
             if (!container || !select) return;
             try {
+                await refreshPublicInrUsdRate();
                 const response = await fetch('https://dhyanshedu-api-proxy.dhyanshedu.workers.dev/api/public/fee-plans');
                 const result = await response.json().catch(() => ({}));
                 if (!response.ok || !result.success) throw new Error(result.error || 'Fees are temporarily unavailable.');
