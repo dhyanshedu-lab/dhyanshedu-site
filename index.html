@@ -1491,8 +1491,8 @@
                 container.replaceChildren();
                 const groups = new Map();
                 (result.fee_plans || []).forEach(plan => {
-                    const match = (plan.name || '').match(/Classes\\s+([0-9]+\\s*[–-]\\s*[0-9]+)/i);
-                    const range = match ? match[1].replace(/\\s+/g, '') : (plan.name || 'Maths Programme');
+                    const match = (plan.name || '').match(/Classes\s+([0-9]+\s*[–-]\s*[0-9]+)/i);
+                    const range = match ? match[1].replace(/\s+/g, '') : (plan.name || 'Maths Programme');
                     if (!groups.has(range)) groups.set(range, []);
                     groups.get(range).push(plan);
 
