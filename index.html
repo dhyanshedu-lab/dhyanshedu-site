@@ -1496,7 +1496,7 @@
                     if (!groups.has(range)) groups.set(range, []);
                     groups.get(range).push(plan);
 
-                    const format = plan.batch_type === 'one_to_one' ? 'One-to-one' : 'Small group';
+                    const format = plan.batch_type === 'one_to_one' ? 'One-to-one' : 'Small group (4–5 students)';
                     const price = Number(plan.amount_paise || 0) / 100;
                     const formatted = '₹' + price.toLocaleString('en-IN', { maximumFractionDigits: 2 });
                     const option = document.createElement('option');
@@ -1527,7 +1527,7 @@
 
                     [
                         { type: 'one_to_one', label: 'One-to-one', icon: 'fa-user' },
-                        { type: 'group', label: 'Small group', icon: 'fa-users' }
+                        { type: 'group', label: 'Small group · 4–5 students', icon: 'fa-users' }
                     ].forEach(info => {
                         const plan = plans.find(item => info.type === 'one_to_one'
                             ? item.batch_type === 'one_to_one'
