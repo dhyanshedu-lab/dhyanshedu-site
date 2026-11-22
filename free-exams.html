@@ -31,7 +31,25 @@ async function saveAnswer(card,q,status,button){
   return ok;
 }
 function startTimer(){clearInterval(timer);const tick=()=>{const left=Math.max(0,deadline-Date.now());$("timer").textContent=String(Math.floor(left/60000)).padStart(2,"0")+":"+String(Math.floor(left%60000/1000)).padStart(2,"0");if(!left){clearInterval(timer);$("timer").textContent="Time ended"}};tick();timer=setInterval(tick,1000)}
-$("submit-exam").onclick=async()=>{if(!confirm("Submit your exam now? You cannot change answers afterwards."))return;const b=$("submit-exam");b.disabled=true;msg("exam-message","Saving answers and submitting…");try{const d=await call("/api/public/attempts/"+encodeURIComponent(attempt.id));for(let i=0;i<d.attempt.questions.length;i++){const card=$("question-list").children[i];await saveAnswer(card,d.attempt.questions[i],card.lastElementChild,card.querySelector("button"))}const r=await call("/api/public/attempts/"+encodeURIComponent(attempt.id)+"/submit",{method:"POST",body:"{}"});clearInterval(timer);if(r.result_available)await showResult();else{$("result-title").textContent="Submission received";$("result-content").textContent=r.manual_review_required?"Your answers are submitted. Some questions need teacher evaluation. Your result will appear here after review.":"Your exam is submitted. Your result will appear here when released.";panel("result-panel")}}catch(e){msg("exam-message",e.message,true)}finally{b.disabled=false}};
+$("submit-exam").onclick=async()=>{
+  if(!confirm("Submit your exam now? You cannot change answers afterwards."))return;
+  const b=$("submit-exam");b.disabled=true;msg("exam-message","Saving answers and submitting…");
+  try{
+    const d=await call("/api/public/attempts/"+encodeURIComponent(attempt.id));
+    if(Date.now()<deadline){
+      for(let i=0;i<d.attempt.questions.length;i++){
+        const card=$("question-list").children[i];
+        const saved=await saveAnswer(card,d.attempt.questions[i],card.lastElementChild,card.querySelector("button"));
+        if(!saved)throw new Error("An answer could not be saved. Please retry before submitting.");
+      }
+    }
+    const r=await call("/api/public/attempts/"+encodeURIComponent(attempt.id)+"/submit",{method:"POST",body:"{}"});
+    clearInterval(timer);
+    if(r.result_available)await showResult();
+    else{$("result-title").textContent="Submission received";$("result-content").textContent=r.manual_review_required?"Your answers are submitted. Some questions need teacher evaluation. Your result will appear here after review.":"Your exam is submitted. Your result will appear here when released.";panel("result-panel")}
+  }catch(e){msg("exam-message",e.message,true)}
+  finally{b.disabled=false}
+};
 async function showResult(){clearInterval(timer);try{const d=await call("/api/public/attempts/"+encodeURIComponent(attempt.id)+"/result");if(d.pending){$("result-title").textContent="Submission received";$("result-content").textContent=d.message;panel("result-panel");return}const r=d.result;$("result-title").textContent=r.title+" · Result";const score=document.createElement("div");score.className="score";score.textContent=Number(r.percentage).toFixed(1)+"%";const summary=document.createElement("p");summary.textContent=Number(r.score).toFixed(2)+" / "+Number(r.total_marks).toFixed(2)+" marks";$("result-content").replaceChildren(score,summary);(r.questions||[]).forEach((q,i)=>{const c=document.createElement("article");c.className="question";const h=document.createElement("h3");h.textContent="Q"+(i+1)+". "+q.question_text;const p=document.createElement("p");p.className="muted";p.textContent="Marks: "+(q.marks_awarded??"Pending")+" / "+q.marks;c.append(h,p);if(q.explanation){const x=document.createElement("p");x.textContent="Explanation: "+q.explanation;c.append(x)}if(q.options?.length){const correct=document.createElement("p");correct.className="muted";correct.textContent="Correct answer: "+q.options.filter(o=>o.is_correct).map(o=>(o.label?o.label+". ":"")+o.text).join("; ");c.append(correct)}if(q.teacher_feedback){const x=document.createElement("p");x.textContent="Teacher feedback: "+q.teacher_feedback;c.append(x)}$("result-content").append(c)});panel("result-panel")}catch(e){msg("result-message",e.message,true);panel("result-panel")}}
 $("back-to-exams").onclick=()=>{attempt=null;selected=null;sessionStorage.removeItem(key);$("registration-form").reset();panel("");catalogue()};
 const saved=sessionStorage.getItem(key);if(saved){try{attempt=JSON.parse(saved);loadAttempt().then(()=>panel("exam-panel")).catch(()=>{sessionStorage.removeItem(key);attempt=null;catalogue()})}catch{catalogue()}}else catalogue();
