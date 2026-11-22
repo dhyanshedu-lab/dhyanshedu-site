@@ -988,6 +988,28 @@
             .hero-buttons { flex-direction: column; align-items: center; }
             .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
         }
+
+        /* ===== PUBLIC COURSE CATALOG ===== */
+        .courses { padding: 100px 0; background: linear-gradient(135deg, #101f38, #0a1628); }
+        .courses-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .course-card { display: flex; flex-direction: column; padding: 30px; border-radius: 20px; background: linear-gradient(145deg, #1a2d50, #101f38); border: 1px solid rgba(212,160,23,.2); box-shadow: 0 12px 35px rgba(0,0,0,.18); }
+        .featured-course { border-color: rgba(240,192,64,.75); box-shadow: 0 12px 40px rgba(212,160,23,.12); }
+        .course-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; color: var(--accent-gold); font-size: 22px; }
+        .course-level { font-size: 11px; letter-spacing: 1.4px; font-weight: 700; padding: 6px 10px; border-radius: 30px; background: rgba(212,160,23,.13); }
+        .course-card h3 { font-size: 21px; margin-bottom: 12px; }
+        .course-card > p { color: var(--text-gray); line-height: 1.65; font-size: 14px; min-height: 70px; }
+        .course-card ul { list-style: none; margin: 18px 0; display: grid; gap: 9px; color: #e4e9f1; font-size: 13px; }
+        .course-card li::before { content: '✓'; color: var(--accent-gold); font-weight: 800; margin-right: 9px; }
+        .course-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 7px; margin: auto 0 18px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.1); }
+        .course-price strong { font-size: 27px; color: var(--accent-gold-light); }
+        .course-price span { color: var(--text-gray); font-size: 11px; }
+        .course-pay { width: 100%; border: 1px dashed rgba(240,192,64,.55); border-radius: 10px; padding: 12px; color: #e7d7a7; background: rgba(212,160,23,.08); font: 600 13px 'Poppins',sans-serif; cursor: not-allowed; }
+        .course-enquire { text-align: center; color: var(--accent-gold-light); font-size: 13px; margin-top: 14px; text-decoration: none; }
+        .course-enquire:hover { text-decoration: underline; }
+        .course-disclaimer { margin: 28px auto 0; max-width: 900px; text-align: center; color: #f0c040; font-size: 12px; line-height: 1.6; }
+        .course-select-group { margin-bottom: 18px; }
+        @media (max-width: 900px) { .courses-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .courses { padding: 70px 0; } .courses-grid { grid-template-columns: 1fr; } .course-card > p { min-height: 0; } }
     </style>
 </head>
 <body>
@@ -1003,6 +1025,7 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home" onclick="closeMenu()">Home</a></li>
                 <li><a href="#features" onclick="closeMenu()">Features</a></li>
+                <li><a href="#courses" onclick="closeMenu()">Courses</a></li>
                 <li><a href="#mentor" onclick="closeMenu()">Mentor</a></li>
                 <li><a href="#boards" onclick="closeMenu()">Boards</a></li>
                 <li><a href="#testimonials" onclick="closeMenu()">Reviews</a></li>
@@ -1111,6 +1134,20 @@
                     <p>Ask anytime. Learn better. Get your doubts cleared even outside class hours.</p>
                 </div>
             </div>
+        </div>
+    </section>
+    <!-- ===== ADMIN-MANAGED MATHS FEES ===== -->
+    <section class="courses" id="courses">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-label">Transparent Maths Fees</span>
+                <h2>Choose Your <span class="gold">Learning Format</span></h2>
+                <p>Live online Mathematics classes for school students in India and internationally. Choose one-to-one coaching or an interactive small group.</p>
+            </div>
+            <div id="public-fee-plans" class="courses-grid" aria-live="polite">
+                <p class="muted">Loading current Maths fees…</p>
+            </div>
+            <p class="course-disclaimer"><i class="fa-solid fa-circle-info"></i> Each fee is per student for one 60-minute live session. International students are welcome; contact us for a quotation in your local currency. Published fees are managed by DhyanshEdu Admin.</p>
         </div>
     </section>
     <!-- ===== MENTOR SECTION ===== -->
@@ -1346,6 +1383,12 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group course-select-group">
+                            <label for="courseInterest">Maths programme and class format</label>
+                            <select id="courseInterest" name="courseInterest">
+                                <option value="">Select a published fee option (optional)</option>
+                            </select>
+                        </div>
                         <button type="submit" class="form-submit">
                             <i class="fa-solid fa-paper-plane"></i> Book Free Demo Class
                         </button>
@@ -1414,6 +1457,82 @@
             document.getElementById('navLinks').classList.remove('active');
         }
 
+        // Carry the Admin-published fee option into the enquiry form.
+        document.addEventListener('click', event => {
+            const link = event.target.closest('[data-fee-plan]');
+            if (!link) return;
+            const select = document.getElementById('courseInterest');
+            if (select) {
+                select.value = link.dataset.feePlan;
+                select.dispatchEvent(new Event('change'));
+            }
+        });
+
+        async function loadPublicFeePlans() {
+            const container = document.getElementById('public-fee-plans');
+            const select = document.getElementById('courseInterest');
+            if (!container || !select) return;
+            try {
+                const response = await fetch('https://dhyanshedu-api-proxy.dhyanshedu.workers.dev/api/public/fee-plans');
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok || !result.success) throw new Error(result.error || 'Fees are temporarily unavailable.');
+                select.replaceChildren(new Option('Select a published fee option (optional)', ''));
+                container.replaceChildren();
+                (result.fee_plans || []).forEach(plan => {
+                    const format = plan.batch_type === 'one_to_one' ? 'One-to-one' : 'Small group';
+                    const price = Number(plan.amount_paise || 0) / 100;
+                    const formatted = '₹' + price.toLocaleString('en-IN', { maximumFractionDigits: 2 });
+                    const option = document.createElement('option');
+                    option.value = plan.id;
+                    option.textContent = plan.name + ' · ' + format + ' · ' + formatted + '/hour';
+                    option.dataset.format = plan.batch_type;
+                    option.dataset.name = plan.name;
+                    select.append(option);
+
+                    const card = document.createElement('article');
+                    card.className = 'course-card';
+                    const top = document.createElement('div');
+                    top.className = 'course-top';
+                    const level = document.createElement('span');
+                    level.className = 'course-level';
+                    level.textContent = format.toUpperCase();
+                    const icon = document.createElement('i');
+                    icon.className = plan.batch_type === 'one_to_one' ? 'fa-solid fa-user' : 'fa-solid fa-users';
+                    top.append(level, icon);
+                    const title = document.createElement('h3');
+                    title.textContent = plan.name;
+                    const description = document.createElement('p');
+                    description.textContent = plan.description || 'Live online Mathematics coaching with guided learning and practice.';
+                    const details = document.createElement('ul');
+                    [ '60-minute live Maths session', format + ' teaching', plan.inclusions || 'Personalised concept teaching and practice' ].forEach(value => {
+                        const li = document.createElement('li');
+                        li.textContent = value;
+                        details.append(li);
+                    });
+                    const priceBox = document.createElement('div');
+                    priceBox.className = 'course-price';
+                    const amount = document.createElement('strong');
+                    amount.textContent = formatted;
+                    const unit = document.createElement('span');
+                    unit.textContent = '/ student · 60 minutes';
+                    priceBox.append(amount, unit);
+                    const enquire = document.createElement('a');
+                    enquire.className = 'course-enquire';
+                    enquire.href = '#contact';
+                    enquire.dataset.feePlan = plan.id;
+                    enquire.textContent = 'Enquire about this option';
+                    card.append(top, title, description, details, priceBox, enquire);
+                    container.append(card);
+                });
+                if (!(result.fee_plans || []).length) {
+                    container.textContent = 'New Maths fee options will be published here shortly. Please contact us for details.';
+                }
+            } catch (error) {
+                container.textContent = 'Current fees could not be loaded. Please contact DhyanshEdu for the latest pricing.';
+            }
+        }
+        loadPublicFeePlans();
+
         // Navbar scroll effect
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
@@ -1447,7 +1566,10 @@
                 phone: document.getElementById('phone').value.trim(),
                 email: document.getElementById('email').value.trim(),
                 student_class: document.getElementById('studentClass').value,
-                board: document.getElementById('board').value
+                board: document.getElementById('board').value,
+                course_interest: document.getElementById('courseInterest').selectedOptions[0]?.dataset.name || '',
+                fee_plan_id: document.getElementById('courseInterest').value || '',
+                learning_format: document.getElementById('courseInterest').selectedOptions[0]?.dataset.format || ''
             };
             try {
                 const response = await fetch('https://dhyanshedu-api-proxy.dhyanshedu.workers.dev/api/public/enquiries', {
