@@ -1572,7 +1572,7 @@
                             amount.textContent = publicUsdLabel(price);
                             const usdAmount = document.createElement('span');
                             usdAmount.className = 'course-format-usd';
-                            usdAmount.textContent = formatted + ' INR';
+                            usdAmount.textContent = '₹' + price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' INR';
                             const unit = document.createElement('span');
                             unit.className = 'course-format-unit';
                             unit.textContent = 'per student · 60 minutes';
