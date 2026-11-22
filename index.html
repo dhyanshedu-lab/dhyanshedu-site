@@ -1158,7 +1158,7 @@
             <div id="public-fee-plans" class="courses-grid" aria-live="polite">
                 <p class="muted">Loading current Maths fees…</p>
             </div>
-            <p class="course-disclaimer"><i class="fa-solid fa-circle-info"></i> Prices are per student for each 60-minute live session. USD figures are indicative conversions at ₹92.68 per US dollar (22 November 2026); INR remains the listed base price. International students are welcome—contact us for a local-currency quotation. </p>
+            <p class="course-disclaimer"><i class="fa-solid fa-circle-info"></i> USD is shown first as an indicative conversion using the latest available exchange rate; INR is the base price and remains unchanged. Prices are per student for each 60-minute live session. International students are welcome—contact us for a local-currency quotation.</p>
         </div>
     </section>
     <!-- ===== MENTOR SECTION ===== -->
@@ -1479,11 +1479,35 @@
             }
         });
 
+        let publicInrUsdRate = null;
+        let publicInrUsdRateFetchedAt = 0;
+        async function refreshPublicInrUsdRate() {
+            const now = Date.now();
+            if (publicInrUsdRate && now - publicInrUsdRateFetchedAt < 6 * 60 * 60 * 1000) return publicInrUsdRate;
+            try {
+                const response = await fetch('https://open.er-api.com/v6/latest/INR', { cache: 'no-store' });
+                if (!response.ok) throw new Error('Exchange-rate service unavailable');
+                const data = await response.json();
+                const rate = Number(data?.rates?.USD);
+                if (data?.result !== 'success' || !Number.isFinite(rate) || rate <= 0) throw new Error('Invalid INR/USD exchange rate');
+                publicInrUsdRate = rate;
+                publicInrUsdRateFetchedAt = now;
+                return rate;
+            } catch (error) {
+                console.warn('Could not refresh public INR/USD rate; USD prices will be unavailable temporarily.', error);
+                return publicInrUsdRate;
+            }
+        }
+        function publicUsdLabel(inrAmount) {
+            if (!publicInrUsdRate) return 'USD temporarily unavailable';
+            return String.fromCharCode(36) + Math.ceil(inrAmount * publicInrUsdRate).toLocaleString('en-US');
+        }
         async function loadPublicFeePlans() {
             const container = document.getElementById('public-fee-plans');
             const select = document.getElementById('courseInterest');
             if (!container || !select) return;
             try {
+                await refreshPublicInrUsdRate();
                 const response = await fetch('https://dhyanshedu-api-proxy.dhyanshedu.workers.dev/api/public/fee-plans');
                 const result = await response.json().catch(() => ({}));
                 if (!response.ok || !result.success) throw new Error(result.error || 'Fees are temporarily unavailable.');
@@ -1499,11 +1523,11 @@
 
                     const format = plan.batch_type === 'one_to_one' ? 'One-to-one' : 'Small group (4–5 students)';
                     const price = Number(plan.amount_paise || 0) / 100;
-                    const formatted = '₹' + price.toLocaleString('en-IN', { maximumFractionDigits: 2 });
-                    const usdFormatted = String.fromCharCode(36) + (price / 92.68).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    const formatted = '₹' + price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    const usdFormatted = publicUsdLabel(price);
                     const option = document.createElement('option');
                     option.value = plan.id;
-                    option.textContent = plan.name + ' · ' + format + ' · ' + formatted + ' (approx. ' + usdFormatted + ')/hour';
+                    option.textContent = plan.name + ' · ' + format + ' · ' + usdFormatted + ' · ' + formatted + '/hour';
                     option.dataset.format = plan.batch_type;
                     option.dataset.name = plan.name;
                     select.append(option);
@@ -1545,10 +1569,10 @@
                             const price = Number(plan.amount_paise || 0) / 100;
                             const amount = document.createElement('strong');
                             amount.className = 'course-format-price';
-                            amount.textContent = '₹' + price.toLocaleString('en-IN', { maximumFractionDigits: 2 });
+                            amount.textContent = publicUsdLabel(price);
                             const usdAmount = document.createElement('span');
                             usdAmount.className = 'course-format-usd';
-                            usdAmount.textContent = '≈ ' + String.fromCharCode(36) + (price / 92.68).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' USD';
+                            usdAmount.textContent = '₹' + price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' INR';
                             const unit = document.createElement('span');
                             unit.className = 'course-format-unit';
                             unit.textContent = 'per student · 60 minutes';
