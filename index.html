@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DhyanshEdu | Dhyan Today. Math Better Tomorrow.</title>
     <meta name="description" content="DhyanshEdu helps students master Maths with focus, clarity, and consistent practice.">
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="apple-touch-icon" href="/logo.png">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <!-- Font Awesome Icons -->
@@ -1736,12 +1738,6 @@
                                 }
 
                                 const price = Number(plan.amount_paise || 0) / 100;
-                                const feeDetails = document.createElement('details');
-                                feeDetails.className = 'course-fee-reveal';
-                                const feeSummary = document.createElement('summary');
-                                feeSummary.textContent = 'View fee details';
-                                const feeValues = document.createElement('div');
-                                feeValues.className = 'course-fee-values';
                                 const amount = document.createElement('strong');
                                 amount.className = 'course-format-price';
                                 amount.textContent = publicUsdLabel(price);
@@ -1751,9 +1747,7 @@
                                 const unit = document.createElement('span');
                                 unit.className = 'course-format-unit';
                                 unit.textContent = (plan.billing_frequency ? plan.billing_frequency.replace(/_/g, ' ') + ' · ' : '') + 'per student';
-                                feeValues.append(amount, inrAmount, unit);
-                                feeDetails.append(feeSummary, feeValues);
-                                feeItem.append(feeDetails);
+                                feeItem.append(amount, inrAmount, unit);
 
                                 if (plan.inclusions) {
                                     const inclusions = document.createElement('p');
