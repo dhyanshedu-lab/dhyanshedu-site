@@ -347,9 +347,10 @@
         }
         .hero-image-wrapper {
             position: relative;
-            width: 420px;
-            height: 480px;
-            min-height: 400px;
+            width: min(100%, 560px);
+            height: auto;
+            aspect-ratio: 18 / 11;
+            min-height: 0;
             border-radius: 30px;
             overflow: hidden;
             background: linear-gradient(135deg, #1a2d50, #0f2140);
@@ -365,6 +366,13 @@
             object-fit: cover;
             display: block;
         }
+        .hero-brand-badge {
+            position:absolute; z-index:3; top:18px; right:18px;
+            width:76px; height:76px; padding:8px; display:grid; place-items:center;
+            border-radius:22px; background:#fff; border:2px solid var(--accent-gold);
+            box-shadow:0 10px 28px rgba(0,0,0,.24);
+        }
+        .hero-brand-badge img {width:100%;height:100%;object-fit:contain;}
         /* Fallback placeholder if image fails */
         .image-placeholder {
             text-align: center;
@@ -1103,7 +1111,8 @@
             .hero{min-height:0;padding:118px 0 48px}
             .hero-container{grid-template-columns:minmax(0,1fr);gap:0;padding:0 24px}
             .hero-content{max-width:720px;width:100%;margin:0 auto}
-            .hero-image{display:none}
+            .hero-image{display:flex;min-height:0;margin:22px auto 0}
+            .hero-image-wrapper{width:min(100%,560px);height:auto;aspect-ratio:18/11;min-height:0}
             .hero h1{font-size:clamp(36px,7vw,48px);line-height:1.12}
             .hero-fee-preview{max-width:100%;margin-top:17px}
         }
@@ -1151,7 +1160,7 @@
                 <li><a href="#home" onclick="closeMenu()">Home</a></li>
                 <li><a href="#features" onclick="closeMenu()">Features</a></li>
                 <li><a href="#courses" onclick="closeMenu()">Courses</a></li>
-                <li><a href="#mentor" onclick="closeMenu()">Mentor</a></li>
+                
                 <li><a href="#boards" onclick="closeMenu()">Boards</a></li>
                 <li><a href="#testimonials" onclick="closeMenu()">Reviews</a></li>
                 <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
@@ -1214,25 +1223,10 @@
             </div>
             <div class="hero-image">
                 <div class="hero-image-wrapper">
-                    <!-- ✅ Image with automatic fallback placeholder -->
-                    <img src="hero-image.png" alt="DhyanshEdu Student"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="image-placeholder" style="display:none;">
-                        <i class="fa-solid fa-chalkboard-user"></i>
-                        <p>Add your image as<br><strong>hero-image.png</strong></p>
-                    </div>
-                </div>
-                <div class="float-stat">
-                    <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
-                    <div class="stat-info"><h4>500+</h4><p>Happy Students</p></div>
-                </div>
-                <div class="float-stat">
-                    <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
-                    <div class="stat-info"><h4>4.9/5</h4><p>Rating</p></div>
-                </div>
-                <div class="float-stat">
-                    <div class="stat-icon"><i class="fa-solid fa-trophy"></i></div>
-                    <div class="stat-info"><h4>95%</h4><p>Score Improvement</p></div>
+                    <img src="kids-study-hero.jpg" alt="Daivansh and Heyansh featured in DhyanshEdu's learning story">
+                    <a class="hero-brand-badge" href="#home" aria-label="DhyanshEdu home">
+                        <img src="logo.png" alt="DhyanshEdu logo">
+                    </a>
                 </div>
             </div>
         </div>
@@ -1281,60 +1275,6 @@
                 <p class="muted">Loading current Maths fees…</p>
             </div>
             <p class="course-disclaimer"><i class="fa-solid fa-circle-info"></i> USD is shown first as an indicative conversion using the latest available exchange rate; INR is the base price and remains unchanged. Prices are per student for each 60-minute live session. International students are welcome—contact us for a local-currency quotation.</p>
-        </div>
-    </section>
-    <!-- ===== MENTOR SECTION ===== -->
-    <section class="mentor" id="mentor">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-label">Your Educator</span>
-                <h2>Meet Your <span class="gold">Mentor</span></h2>
-                <p>Learn from an experienced Mathematics educator with a proven track record of student success.</p>
-            </div>
-            <div class="mentor-grid">
-                <div class="mentor-photo-wrapper">
-                    <div class="mentor-photo">
-                        <img src="mentor-photo.png" alt="Mounika - Maths Mentor"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="image-placeholder" style="display:none;">
-                            <i class="fa-solid fa-user-tie"></i>
-                            <p>Add image as<br><strong>mentor-photo.png</strong></p>
-                        </div>
-                    </div>
-                    <div class="mentor-badge-float">⭐ IIT JEE Maths Expert</div>
-                </div>
-                <div class="mentor-content">
-                    <h2>Hi, I'm <span class="gold">Mounika</span></h2>
-                    <p class="mentor-title">Mathematics Faculty & IIT JEE Expert | Bengaluru, Karnataka</p>
-                    <p>Passionate and experienced Mathematics educator with a strong background in preparing students for the IIT JEE examination. I bring concept-first teaching, personalized mentoring, and years of experience across multiple curricula including CBSE and the Australian curriculum.</p>
-                    <div class="mentor-highlights">
-                        <div class="mentor-highlight-item">
-                            <div class="mh-icon"><i class="fa-solid fa-building-columns"></i></div>
-                            <div>
-                                <h4>T.I.M.E Institute</h4>
-                                <p>Math Faculty for IIT JEE (2019–2021)</p>
-                            </div>
-                        </div>
-                        <div class="mentor-highlight-item">
-                            <div class="mh-icon"><i class="fa-solid fa-globe"></i></div>
-                            <div>
-                                <h4>Eduflare, Australia</h4>
-                                <p>Online Maths Tutor (2023–Present)</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mentor-education">
-                        <div class="edu-tag">
-                            <i class="fa-solid fa-graduation-cap"></i>
-                            M.Tech — NIT Calicut (2019)
-                        </div>
-                        <div class="edu-tag">
-                            <i class="fa-solid fa-graduation-cap"></i>
-                            B.Tech Electrical — Yogi Vemana University (2017)
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
     <!-- ===== BOARDS SECTION ===== -->
@@ -1548,7 +1488,7 @@
                     <ul class="footer-links">
                         <li><a href="#home">Home</a></li>
                         <li><a href="#features">Features</a></li>
-                        <li><a href="#mentor">Mentor</a></li>
+                        
                         <li><a href="#contact">Contact</a></li>
                         <li><a href="https://portal.dhyanshedu.com">Portal Login (Admin / Teacher / Student)</a></li>
                     </ul>
