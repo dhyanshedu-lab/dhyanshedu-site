@@ -1023,10 +1023,11 @@
 .course-format-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: auto; }
         .course-fee-item { padding: 12px 0; border-top: 1px solid rgba(255,255,255,.10); margin-top: 10px; }
         .course-format-option{display:flex;flex-direction:column;align-items:stretch}
-        .course-fee-item{display:flex;flex:1;flex-direction:column;align-items:stretch;min-width:0}
+        .course-fee-item{display:flex;flex:1 1 0;flex-direction:column;align-items:stretch;min-width:0;min-height:290px}
         .course-fee-item .course-enquire{margin-top:auto}
         .course-format-options{align-items:stretch;grid-auto-rows:1fr}
-        .course-format-option>.course-fee-item{height:100%}
+        .course-format-option>.course-fee-item{height:auto}
+        @media(max-width:640px){.course-fee-item{min-height:270px}}
         .course-fee-item:first-of-type { border-top: 0; margin-top: 4px; padding-top: 4px; }
         .course-fee-item h5 { font-size: 13px; line-height: 1.45; color: #fff; font-weight: 700; margin: 0 0 6px; }
         .course-fee-description { font-size: 11px; line-height: 1.55; color: var(--text-gray); margin: 5px 0; }
