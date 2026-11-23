@@ -1005,6 +1005,9 @@
         .course-card > p { color: var(--text-gray); line-height: 1.65; font-size: 13px; min-height: 64px; }
         .course-card ul { list-style: none; margin: 17px 0 20px; display: grid; gap: 9px; color: #e4e9f1; font-size: 12px; }
         .course-card li::before { content: '✓'; color: var(--accent-gold); font-weight: 800; margin-right: 9px; }
+        .course-programme-meta { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin:14px 0 16px; padding:12px; border-radius:12px; background:rgba(212,160,23,.08); border:1px solid rgba(212,160,23,.18); }
+        .course-programme-meta strong { grid-column:1/-1; color:var(--accent-gold-light); font-size:15px; }
+        .course-programme-meta span { color:#d6deeb; font-size:11px; line-height:1.4; }
         .course-format-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: auto; }
         .course-fee-item { padding: 12px 0; border-top: 1px solid rgba(255,255,255,.10); margin-top: 10px; }
         .course-fee-item:first-of-type { border-top: 0; margin-top: 4px; padding-top: 4px; }
@@ -1681,6 +1684,18 @@
                     title.textContent = 'Classes ' + range;
                     const description = document.createElement('p');
                     description.textContent = 'Develop clarity, accuracy and confidence through structured, expert-led learning.';
+
+                    const isJeeProgramme = /JEE/i.test(range) || /JEE/i.test(plans.map(plan => plan.name || '').join(' '));
+                    const programmeMeta = document.createElement('div');
+                    programmeMeta.className = 'course-programme-meta';
+                    const classCount = document.createElement('strong');
+                    classCount.textContent = isJeeProgramme ? '100 live classes' : '50 live classes';
+                    const duration = document.createElement('span');
+                    duration.textContent = 'Approx. 6 months · 60 minutes per class';
+                    const weekly = document.createElement('span');
+                    weekly.textContent = isJeeProgramme ? '4 classes per week' : '2 classes per week';
+                    programmeMeta.append(classCount, duration, weekly);
+
                     const formats = document.createElement('div');
                     formats.className = 'course-format-options';
 
@@ -1757,7 +1772,7 @@
                         }
                         formats.append(optionCard);
                     });
-                    card.append(top, title, description, formats);
+                    card.append(top, title, description, programmeMeta, formats);
                     container.append(card);
                 });
                 if (!(result.fee_plans || []).length) {
