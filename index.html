@@ -1137,6 +1137,7 @@
             .hero-fee-link{font-size:11px;margin-top:9px}
         }
         @media(max-width:360px){.hero-fee-heading{align-items:flex-start;flex-direction:column}.hero-fee-heading small{text-align:left}.hero-fee-option strong{font-size:15px}}
+        .mentor-grid.mentor-details-only { grid-template-columns: minmax(0, 1fr); max-width: 900px; margin-inline: auto; }
     </style>
 </head>
 <body>
@@ -1154,6 +1155,7 @@
                 <li><a href="#features" onclick="closeMenu()">Features</a></li>
                 <li><a href="#courses" onclick="closeMenu()">Courses</a></li>
                 
+                <li><a href="#mentor" onclick="closeMenu()">Mentor</a></li>
                 <li><a href="#boards" onclick="closeMenu()">Boards</a></li>
                 <li><a href="#testimonials" onclick="closeMenu()">Reviews</a></li>
                 <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
@@ -1265,6 +1267,49 @@
                 <p class="muted">Loading current Maths fees…</p>
             </div>
             <p class="course-disclaimer"><i class="fa-solid fa-circle-info"></i> USD is shown first as an indicative conversion using the latest available exchange rate; INR is the base price and remains unchanged. Prices are per student for each 60-minute live session. International students are welcome—contact us for a local-currency quotation.</p>
+        </div>
+    </section>
+    <!-- ===== MENTOR SECTION ===== -->
+    <section class="mentor" id="mentor">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-label">Your Educator</span>
+                <h2>Meet Your <span class="gold">Mentor</span></h2>
+                <p>Learn from an experienced Mathematics educator with a proven track record of student success.</p>
+            </div>
+            <div class="mentor-grid mentor-details-only">
+                <div class="mentor-content">
+                    <h2>Hi, I'm <span class="gold">Mounika</span></h2>
+                    <p class="mentor-title">Mathematics Faculty & IIT JEE Expert | Bengaluru, Karnataka</p>
+                    <p>Passionate and experienced Mathematics educator with a strong background in preparing students for the IIT JEE examination. I bring concept-first teaching, personalized mentoring, and years of experience across multiple curricula including CBSE and the Australian curriculum.</p>
+                    <div class="mentor-highlights">
+                        <div class="mentor-highlight-item">
+                            <div class="mh-icon"><i class="fa-solid fa-building-columns"></i></div>
+                            <div>
+                                <h4>T.I.M.E Institute</h4>
+                                <p>Math Faculty for IIT JEE (2019–2021)</p>
+                            </div>
+                        </div>
+                        <div class="mentor-highlight-item">
+                            <div class="mh-icon"><i class="fa-solid fa-globe"></i></div>
+                            <div>
+                                <h4>Eduflare, Australia</h4>
+                                <p>Online Maths Tutor (2023–Present)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mentor-education">
+                        <div class="edu-tag">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            M.Tech — NIT Calicut (2019)
+                        </div>
+                        <div class="edu-tag">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            B.Tech Electrical — Yogi Vemana University (2017)
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
     <!-- ===== BOARDS SECTION ===== -->
@@ -1479,6 +1524,7 @@
                         <li><a href="#home">Home</a></li>
                         <li><a href="#features">Features</a></li>
                         
+                        <li><a href="#mentor">Mentor</a></li>
                         <li><a href="#contact">Contact</a></li>
                         <li><a href="https://portal.dhyanshedu.com">Portal Login (Admin / Teacher / Student)</a></li>
                     </ul>
