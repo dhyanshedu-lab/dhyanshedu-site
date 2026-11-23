@@ -1036,6 +1036,13 @@
         .course-format-unit { display: block; min-height: 34px; color: var(--text-gray); font-size: 10px; line-height: 1.5; margin: 5px 0 13px; }
         .course-enquire { display: block; margin-top: auto; text-align: center; color: var(--primary-dark); background: var(--gradient-gold); font-size: 11px; font-weight: 700; padding: 10px 8px; border-radius: 30px; text-decoration: none; transition: transform .2s ease, box-shadow .2s ease; }
         .course-enquire:hover { transform: translateY(-2px); box-shadow: var(--shadow-gold); text-decoration: none; }
+        /* Keep the enquiry actions aligned at the bottom of both format cards. */
+        .course-format-options { align-items: stretch; }
+        .course-format-option { display: flex; flex-direction: column; height: 100%; min-width: 0; }
+        .course-fee-item { display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0; }
+        .course-enquire { width: 100%; align-self: stretch; margin-top: auto; }
+        .course-format-unavailable { margin-top: auto; }
+
         .course-format-unavailable { color: var(--text-gray); font-size: 11px; padding: 10px 0; }
         .course-disclaimer { margin: 24px auto 0; max-width: 900px; text-align: center; color: #c8d0df; font-size: 12px; line-height: 1.7; }
         .course-disclaimer i { color: var(--accent-gold-light); margin-right: 5px; }
