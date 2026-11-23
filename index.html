@@ -1006,6 +1006,13 @@
         .course-card ul { list-style: none; margin: 17px 0 20px; display: grid; gap: 9px; color: #e4e9f1; font-size: 12px; }
         .course-card li::before { content: '✓'; color: var(--accent-gold); font-weight: 800; margin-right: 9px; }
         .course-format-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: auto; }
+        .course-fee-item { padding: 12px 0; border-top: 1px solid rgba(255,255,255,.10); margin-top: 10px; }
+        .course-fee-item:first-of-type { border-top: 0; margin-top: 4px; padding-top: 4px; }
+        .course-fee-item h5 { font-size: 13px; line-height: 1.45; color: #fff; font-weight: 700; margin: 0 0 6px; }
+        .course-fee-description { font-size: 11px; line-height: 1.55; color: var(--text-gray); margin: 5px 0; }
+        .course-fee-terms { font-size: 11px; color: #d4dbea; margin-top: 7px; }
+        .course-fee-terms summary { cursor: pointer; color: var(--accent-gold-light); font-weight: 700; }
+        .course-fee-terms p { white-space: pre-line; margin-top: 6px; line-height: 1.5; }
         .course-format-option { min-width: 0; min-height: 100%; display: flex; flex-direction: column; padding: 16px 14px; border: 1px solid rgba(212,160,23,.2); border-radius: 14px; background: rgba(7,17,32,.32); }
         .course-format-option h4 { display: flex; align-items: flex-start; gap: 7px; min-height: 48px; color: #e9edf5; font-size: 12px; font-weight: 600; line-height: 1.45; margin-bottom: 10px; }
         .course-format-option h4 i { color: var(--accent-gold); }
@@ -1679,11 +1686,9 @@
 
                     [
                         { type: 'one_to_one', label: 'One-to-one', icon: 'fa-user' },
-                        { type: 'group', label: 'Small group · 4–5 students', icon: 'fa-users' }
+                        { type: 'group', label: 'Small group', icon: 'fa-users' }
                     ].forEach(info => {
-                        const plan = plans.find(item => info.type === 'one_to_one'
-                            ? item.batch_type === 'one_to_one'
-                            : item.batch_type !== 'one_to_one');
+                        const matchingPlans = plans.filter(item => item.batch_type === info.type);
                         const optionCard = document.createElement('div');
                         optionCard.className = 'course-format-option';
                         const heading = document.createElement('h4');
@@ -1691,23 +1696,59 @@
                         formatIcon.className = 'fa-solid ' + info.icon;
                         heading.append(formatIcon, document.createTextNode(info.label));
                         optionCard.append(heading);
-                        if (plan) {
-                            const price = Number(plan.amount_paise || 0) / 100;
-                            const amount = document.createElement('strong');
-                            amount.className = 'course-format-price';
-                            amount.textContent = publicUsdLabel(price);
-                            const usdAmount = document.createElement('span');
-                            usdAmount.className = 'course-format-usd';
-                            usdAmount.textContent = '₹' + price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' INR';
-                            const unit = document.createElement('span');
-                            unit.className = 'course-format-unit';
-                            unit.textContent = 'per student · 60 minutes';
-                            const enquire = document.createElement('a');
-                            enquire.className = 'course-enquire';
-                            enquire.href = '#contact';
-                            enquire.dataset.feePlan = plan.id;
-                            enquire.textContent = 'Enquire now';
-                            optionCard.append(amount, usdAmount, unit, enquire);
+
+                        if (matchingPlans.length) {
+                            matchingPlans.forEach(plan => {
+                                const feeItem = document.createElement('div');
+                                feeItem.className = 'course-fee-item';
+                                const planTitle = document.createElement('h5');
+                                planTitle.textContent = plan.plan_name || plan.name || 'Maths programme';
+                                feeItem.append(planTitle);
+
+                                if (plan.description) {
+                                    const description = document.createElement('p');
+                                    description.className = 'course-fee-description';
+                                    description.textContent = plan.description;
+                                    feeItem.append(description);
+                                }
+
+                                const price = Number(plan.amount_paise || 0) / 100;
+                                const amount = document.createElement('strong');
+                                amount.className = 'course-format-price';
+                                amount.textContent = publicUsdLabel(price);
+                                const inrAmount = document.createElement('span');
+                                inrAmount.className = 'course-format-usd';
+                                inrAmount.textContent = '₹' + price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' INR';
+                                const unit = document.createElement('span');
+                                unit.className = 'course-format-unit';
+                                unit.textContent = (plan.billing_frequency ? plan.billing_frequency.replace(/_/g, ' ') + ' · ' : '') + 'per student';
+                                feeItem.append(amount, inrAmount, unit);
+
+                                if (plan.inclusions) {
+                                    const inclusions = document.createElement('p');
+                                    inclusions.className = 'course-fee-description';
+                                    inclusions.textContent = 'Includes: ' + plan.inclusions;
+                                    feeItem.append(inclusions);
+                                }
+                                if (plan.terms) {
+                                    const terms = document.createElement('details');
+                                    terms.className = 'course-fee-terms';
+                                    const summary = document.createElement('summary');
+                                    summary.textContent = 'Fee details & terms';
+                                    const detail = document.createElement('p');
+                                    detail.textContent = plan.terms;
+                                    terms.append(summary, detail);
+                                    feeItem.append(terms);
+                                }
+
+                                const enquire = document.createElement('a');
+                                enquire.className = 'course-enquire';
+                                enquire.href = '#contact';
+                                enquire.dataset.feePlan = plan.id;
+                                enquire.textContent = 'Enquire about this plan';
+                                feeItem.append(enquire);
+                                optionCard.append(feeItem);
+                            });
                         } else {
                             const unavailable = document.createElement('span');
                             unavailable.className = 'course-format-unavailable';
