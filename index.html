@@ -1008,7 +1008,17 @@
         .course-programme-meta { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin:14px 0 16px; padding:12px; border-radius:12px; background:rgba(212,160,23,.08); border:1px solid rgba(212,160,23,.18); }
         .course-programme-meta strong { grid-column:1/-1; color:var(--accent-gold-light); font-size:15px; }
         .course-programme-meta span { color:#d6deeb; font-size:11px; line-height:1.4; }
-        .course-format-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: auto; }
+        .course-card{height:100%;display:flex;flex-direction:column;align-items:stretch}
+        .course-card > p{min-height:0}
+        .course-format-options{align-items:stretch}
+        .course-format-option{height:100%;align-self:stretch}
+        .course-fee-reveal{margin:4px 0 12px;border:1px solid rgba(212,160,23,.22);border-radius:10px;padding:9px 10px}
+        .course-fee-reveal summary{cursor:pointer;color:var(--accent-gold-light);font-size:11px;font-weight:700;list-style:none}
+        .course-fee-reveal summary::-webkit-details-marker{display:none}
+        .course-fee-reveal summary:after{content:' +';float:right}
+        .course-fee-reveal[open] summary:after{content:' −'}
+        .course-fee-values{padding-top:10px}
+.course-format-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: auto; }
         .course-fee-item { padding: 12px 0; border-top: 1px solid rgba(255,255,255,.10); margin-top: 10px; }
         .course-fee-item:first-of-type { border-top: 0; margin-top: 4px; padding-top: 4px; }
         .course-fee-item h5 { font-size: 13px; line-height: 1.45; color: #fff; font-weight: 700; margin: 0 0 6px; }
@@ -1044,7 +1054,7 @@
         .hero-fee-option strong{display:block;font-size:21px;line-height:1.2;color:var(--accent-gold-light);font-weight:800}
         .hero-fee-option small{display:block;font-size:10px;color:#c1cada;margin-top:3px}
         .hero-fee-option .hero-fee-empty{font-size:12px;color:#c1cada}
-        .hero-fee-loading{font-size:11px;color:var(--text-gray);grid-column:1/-1}
+        .hero-fee-intro{font-size:12px;line-height:1.65;color:#d6deeb;margin:0}.hero-fee-loading{font-size:11px;color:var(--text-gray);grid-column:1/-1}
         .hero-fee-link{display:inline-flex;align-items:center;gap:7px;margin-top:11px;color:var(--accent-gold-light);font-size:11px;font-weight:700;text-decoration:none}
         .hero-fee-link:hover{color:#fff}
         @media(max-width:900px){.hero{padding-bottom:55px}.hero-container{grid-template-columns:1fr;gap:25px}.hero-content{max-width:680px}.hero-image{min-height:360px}.hero-image-wrapper{width:min(390px,82vw);height:390px}.hero-fee-preview{max-width:680px}}
@@ -1182,11 +1192,9 @@
                     <a href="#courses" class="hero-fees-text-link">Explore programmes & fees <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
                 <div class="hero-fee-preview" aria-live="polite">
-                    <div class="hero-fee-heading"><span>PROGRAMMES & SESSION FEES</span><small>60-minute live classes</small></div>
-                    <div id="hero-fee-options" class="hero-fee-options">
-                        <div class="hero-fee-loading">Loading current published fees…</div>
-                    </div>
-                    <a class="hero-fee-link" href="#courses">View all class-wise fees <i class="fa-solid fa-arrow-right"></i></a>
+                    <div class="hero-fee-heading"><span>PROGRAMMES & FEES</span><small>Flexible learning options</small></div>
+                    <p class="hero-fee-intro">Explore our Maths programmes, choose one-to-one or small-group learning, and view the fee details that match your class.</p>
+                    <a class="hero-fee-link" href="#courses">Explore programmes & view fees <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </div>
             <div class="hero-image">
@@ -1691,9 +1699,9 @@
                     const classCount = document.createElement('strong');
                     classCount.textContent = isJeeProgramme ? '100 live classes' : '50 live classes';
                     const duration = document.createElement('span');
-                    duration.textContent = 'Approx. 6 months · 60 minutes per class';
+                    duration.textContent = isJeeProgramme ? 'Approx. 6 months · 60 minutes per class' : 'Approx. 4 months · 60 minutes per class';
                     const weekly = document.createElement('span');
-                    weekly.textContent = isJeeProgramme ? '4 classes per week' : '2 classes per week';
+                    weekly.textContent = isJeeProgramme ? '4 classes per week' : '3 classes per week';
                     programmeMeta.append(classCount, duration, weekly);
 
                     const formats = document.createElement('div');
@@ -1728,6 +1736,12 @@
                                 }
 
                                 const price = Number(plan.amount_paise || 0) / 100;
+                                const feeDetails = document.createElement('details');
+                                feeDetails.className = 'course-fee-reveal';
+                                const feeSummary = document.createElement('summary');
+                                feeSummary.textContent = 'View fee details';
+                                const feeValues = document.createElement('div');
+                                feeValues.className = 'course-fee-values';
                                 const amount = document.createElement('strong');
                                 amount.className = 'course-format-price';
                                 amount.textContent = publicUsdLabel(price);
@@ -1737,7 +1751,9 @@
                                 const unit = document.createElement('span');
                                 unit.className = 'course-format-unit';
                                 unit.textContent = (plan.billing_frequency ? plan.billing_frequency.replace(/_/g, ' ') + ' · ' : '') + 'per student';
-                                feeItem.append(amount, inrAmount, unit);
+                                feeValues.append(amount, inrAmount, unit);
+                                feeDetails.append(feeSummary, feeValues);
+                                feeItem.append(feeDetails);
 
                                 if (plan.inclusions) {
                                     const inclusions = document.createElement('p');
