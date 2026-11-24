@@ -1880,17 +1880,6 @@
                                     programmeDetails.append(programmeSummary, programmeContent);
                                     feeItem.append(programmeDetails);
                                 }
-                                if (plan.terms) {
-                                    const terms = document.createElement('details');
-                                    terms.className = 'course-fee-terms';
-                                    const summary = document.createElement('summary');
-                                    summary.textContent = 'View terms';
-                                    const detail = document.createElement('p');
-                                    detail.textContent = plan.terms;
-                                    terms.append(summary, detail);
-                                    feeItem.append(terms);
-                                }
-
                                 const enquire = document.createElement('a');
                                 enquire.className = 'course-enquire';
                                 enquire.href = '#contact';
