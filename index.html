@@ -200,10 +200,8 @@
         .course-fee-item { min-height:0; padding:10px 0; }
         .course-fee-item h5 { font-size:12px; margin-bottom:8px; }
         .course-fee-description { font-size:10px; }
-        .course-format-price { font-size:23px; }
         .course-format-usd { font-size:13px; }
         .course-format-unit { min-height:0; margin:5px 0 4px; font-size:11px; }
-        .course-format-per-class { display:block; color:var(--text-gray); font-size:10px; margin:0 0 12px; }
         .custom-class-selection { padding:15px; margin:14px 0; border:1px solid rgba(212,160,23,.22); border-radius:14px; background:rgba(7,17,32,.22); }
         .custom-class-quote { min-height:52px; font-size:18px; }
         .refund-form-note { font-size:12px; margin:2px 0 14px; }
@@ -1064,9 +1062,6 @@
         .course-format-option { min-width: 0; min-height: 100%; display: flex; flex-direction: column; padding: 16px 14px; border: 1px solid rgba(212,160,23,.2); border-radius: 14px; background: rgba(7,17,32,.32); }
         .course-format-option h4 { display: flex; align-items: flex-start; gap: 7px; min-height: 48px; color: #e9edf5; font-size: 12px; font-weight: 600; line-height: 1.45; margin-bottom: 10px; }
         .course-format-option h4 i { color: var(--accent-gold); }
-        .course-format-price { display: block; color: var(--accent-gold-light); font-size: 25px; line-height: 1.2; font-weight: 700; letter-spacing: -.5px; }
-        .course-format-usd { display: block; color: #d6deeb; font-size: 13px; font-weight: 600; margin-top: 3px; }
-        .course-format-unit { display: block; min-height: 34px; color: var(--text-gray); font-size: 10px; line-height: 1.5; margin: 5px 0 13px; }
         .course-enquire { display: block; margin-top: auto; text-align: center; color: var(--primary-dark); background: var(--gradient-gold); font-size: 11px; font-weight: 700; padding: 10px 8px; border-radius: 30px; text-decoration: none; transition: transform .2s ease, box-shadow .2s ease; }
         .course-enquire:hover { transform: translateY(-2px); box-shadow: var(--shadow-gold); text-decoration: none; }
         /* Keep the enquiry actions aligned at the bottom of both format cards. */
@@ -1623,36 +1618,12 @@
             }
         });
 
-        let publicInrUsdRate = null;
-        let publicInrUsdRateFetchedAt = 0;
-        async function refreshPublicInrUsdRate() {
-            const now = Date.now();
-            if (publicInrUsdRate && now - publicInrUsdRateFetchedAt < 6 * 60 * 60 * 1000) return publicInrUsdRate;
-            try {
-                const response = await fetch('https://open.er-api.com/v6/latest/INR', { cache: 'no-store' });
-                if (!response.ok) throw new Error('Exchange-rate service unavailable');
-                const data = await response.json();
-                const rate = Number(data?.rates?.USD);
-                if (data?.result !== 'success' || !Number.isFinite(rate) || rate <= 0) throw new Error('Invalid INR/USD exchange rate');
-                publicInrUsdRate = rate;
-                publicInrUsdRateFetchedAt = now;
-                return rate;
-            } catch (error) {
-                console.warn('Could not refresh public INR/USD rate; USD prices will be unavailable temporarily.', error);
-                return publicInrUsdRate;
-            }
-        }
-        function publicUsdLabel(inrAmount) {
-            if (!publicInrUsdRate) return 'USD temporarily unavailable';
-            return String.fromCharCode(36) + Math.ceil(inrAmount * publicInrUsdRate).toLocaleString('en-US');
-        }
         async function loadPublicFeePlans() {
             const container = document.getElementById('public-fee-plans');
             const select = document.getElementById('courseInterest');
             if (!container || !select) return;
             try {
                 const feeResponsePromise = fetch('https://dhyanshedu-api-proxy.dhyanshedu.workers.dev/api/public/fee-plans');
-                await refreshPublicInrUsdRate();
                 const response = await feeResponsePromise;
                 const result = await response.json().catch(() => ({}));
                 if (!response.ok || !result.success) throw new Error(result.error || 'Fees are temporarily unavailable.');
