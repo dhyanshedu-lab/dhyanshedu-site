@@ -1808,7 +1808,9 @@
                                 const rawPlanTitle = plan.plan_name || plan.name || 'Maths programme';
                                 const knownProgramme = rawPlanTitle.match(/senior\s+secondary\s+maths|maths\s+foundation|maths\s+mastery/i);
                                 const displayPlanTitle = knownProgramme
-                                    ? knownProgramme[0].replace(/\s+/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase())
+                                    ? (knownProgramme[0].match(/senior\s+secondary\s+maths/i)
+                                        ? 'Senior Secondary'
+                                        : knownProgramme[0].replace(/\s+/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase()))
                                     : rawPlanTitle
                                         .replace(/\bclasses?\s*\d+\s*[–-]\s*\d+\b/gi, '')
                                         .replace(/\s*[·|–-]\s*/g, ' ')
