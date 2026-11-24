@@ -192,6 +192,21 @@
             border-radius: 3px;
             transition: all 0.3s ease;
         }
+        .course-programme-meta { padding:10px 12px; margin:12px 0 14px; gap:5px; }
+        .course-programme-meta strong { font-size:14px; }
+        .course-programme-meta span { font-size:10px; }
+        .course-format-option { padding:15px; }
+        .course-format-option h4 { min-height:0; margin-bottom:8px; font-size:13px; }
+        .course-fee-item { min-height:0; padding:10px 0; }
+        .course-fee-item h5 { font-size:12px; margin-bottom:8px; }
+        .course-fee-description { font-size:10px; }
+        .course-format-price { font-size:23px; }
+        .course-format-usd { font-size:13px; }
+        .course-format-unit { min-height:0; margin:5px 0 4px; font-size:11px; }
+        .course-format-per-class { display:block; color:var(--text-gray); font-size:10px; margin:0 0 12px; }
+        .custom-class-selection { padding:15px; margin:14px 0; border:1px solid rgba(212,160,23,.22); border-radius:14px; background:rgba(7,17,32,.22); }
+        .custom-class-quote { min-height:52px; font-size:18px; }
+        .refund-form-note { font-size:12px; margin:2px 0 14px; }
         .course-guarantee { display:flex; gap:16px; align-items:flex-start; max-width:900px; margin:24px auto 0; padding:22px 24px; border:1px solid rgba(212,160,23,.45); border-radius:18px; background:rgba(212,160,23,.09); color:var(--white); }
         .course-guarantee > i { color:var(--accent-gold-light); font-size:25px; margin-top:3px; }
         .course-guarantee strong { display:block; color:var(--accent-gold-light); font-size:18px; margin-bottom:5px; }
@@ -1287,7 +1302,7 @@
                 <p class="muted">Loading current Maths fees…</p>
             </div>
             <p class="course-disclaimer"><i class="fa-solid fa-circle-info"></i> USD is shown first as an indicative conversion using the latest available exchange rate; INR is the base price and remains unchanged. Prices are per student for each 60-minute live session. Choose any number of classes to suit your learning plan. International students are welcome—contact us for a local-currency quotation.</p>
-            <div class="course-guarantee"><i class="fa-solid fa-shield-heart"></i><div><strong>100% Money-Back Guarantee</strong><p>Attend your first 5 classes. If you are not satisfied—even after completing all 5—we will refund 100% of your package fee, with no deductions.</p></div></div>
+            <div class="course-guarantee"><i class="fa-solid fa-shield-heart"></i><div><strong>100% Money-Back Guarantee</strong><p>Not satisfied after your first 5 classes? Receive a full refund.</p></div></div>
         </div>
     </section>
     <!-- ===== MENTOR SECTION ===== -->
@@ -1520,17 +1535,16 @@
                         </div>
                         <div class="form-row custom-class-selection">
                             <div class="form-group">
-                                <label for="requestedClassCount">How many classes would you like? *</label>
-                                <input type="number" id="requestedClassCount" name="requestedClassCount" min="1" max="1000" step="1" value="50" required inputmode="numeric">
-                                <small>Choose any quantity. There are no fixed package sizes.</small>
+                                <label for="requestedClassCount">Number of classes</label>
+                                <input type="number" id="requestedClassCount" name="requestedClassCount" min="1" max="100" step="1" value="50" required inputmode="numeric">
+                                <small>Standard package: 50 classes (JEE: 100).</small>
                             </div>
                             <div class="form-group">
-                                <label>Estimated package fee</label>
-                                <div id="customClassQuote" class="custom-class-quote" aria-live="polite">Select a fee option to calculate your total.</div>
-                                <small>Based on the published price per 60-minute class.</small>
+                                <label>Package fee</label>
+                                <div id="customClassQuote" class="custom-class-quote" aria-live="polite">Select a programme to view the package fee.</div>
                             </div>
                         </div>
-                        <p class="refund-form-note"><i class="fa-solid fa-shield-heart"></i> Pay for your selected package, attend the first 5 classes, and request a full refund if you are not satisfied—even after all 5 classes.</p>
+                        <p class="refund-form-note"><i class="fa-solid fa-shield-heart"></i> Not satisfied after your first 5 classes? Get a 100% refund.</p>
                         <button type="submit" class="form-submit">
                             <i class="fa-solid fa-paper-plane"></i> Book Free Demo Class
                         </button>
@@ -1664,6 +1678,7 @@
                     option.dataset.format = plan.batch_type;
                     option.dataset.name = plan.name;
                     option.dataset.amountPaise = String(Number(plan.amount_paise || 0));
+                    option.dataset.defaultClasses = /JEE/i.test(plan.name || '') ? '100' : '50';
                     select.append(option);
                 });
 
@@ -1723,7 +1738,7 @@
                     const programmeMeta = document.createElement('div');
                     programmeMeta.className = 'course-programme-meta';
                     const classCount = document.createElement('strong');
-                    classCount.textContent = 'Choose any number of live classes';
+                    classCount.textContent = isJeeProgramme ? '100-class standard package' : '50-class standard package';
                     const duration = document.createElement('span');
                     duration.textContent = '60 minutes per class · flexible package size';
                     const weekly = document.createElement('span');
@@ -1761,17 +1776,23 @@
                                     feeItem.append(description);
                                 }
 
-                                const price = Number(plan.amount_paise || 0) / 100;
+                                const perClassInr = Number(plan.amount_paise || 0) / 100;
+                                const standardClassCount = isJeeProgramme ? 100 : 50;
+                                const packageInr = perClassInr * standardClassCount;
                                 const amount = document.createElement('strong');
                                 amount.className = 'course-format-price';
-                                amount.textContent = publicUsdLabel(price);
+                                amount.textContent = publicUsdLabel(packageInr);
                                 const inrAmount = document.createElement('span');
                                 inrAmount.className = 'course-format-usd';
-                                inrAmount.textContent = '₹' + price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' INR';
+                                inrAmount.textContent = '₹' + packageInr.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' INR';
                                 const unit = document.createElement('span');
                                 unit.className = 'course-format-unit';
-                                unit.textContent = (plan.billing_frequency ? plan.billing_frequency.replace(/_/g, ' ') + ' · ' : '') + 'per student';
+                                unit.textContent = standardClassCount + ' classes · 60 minutes each';
                                 feeItem.append(amount, inrAmount, unit);
+                                const perClass = document.createElement('span');
+                                perClass.className = 'course-format-per-class';
+                                perClass.textContent = '₹' + perClassInr.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' per class';
+                                feeItem.append(perClass);
 
                                 if (plan.inclusions) {
                                     const inclusions = document.createElement('p');
@@ -1827,15 +1848,20 @@
             const selected = planSelect.selectedOptions[0];
             const count = Number(countInput.value);
             const pricePaise = Number(selected?.dataset.amountPaise || 0);
-            if (!planSelect.value || !Number.isInteger(count) || count < 1 || count > 1000 || pricePaise <= 0) {
+            if (!planSelect.value || !Number.isInteger(count) || count < 1 || count > 100 || pricePaise <= 0) {
                 quote.textContent = planSelect.value ? 'Enter a valid class quantity to calculate your total.' : 'Select a fee option to calculate your total.';
                 return;
             }
-            const totalInr = (pricePaise * count) / 10000;
+            const totalInr = (pricePaise * count) / 100;
             const usd = publicInrUsdRate ? String.fromCharCode(36) + Math.ceil(totalInr * publicInrUsdRate).toLocaleString('en-US') + ' · ' : '';
             quote.textContent = usd + '₹' + totalInr.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' INR';
         }
-        document.getElementById('courseInterest')?.addEventListener('change', updateCustomClassQuote);
+        document.getElementById('courseInterest')?.addEventListener('change', () => {
+            const selected = document.getElementById('courseInterest').selectedOptions[0];
+            const countInput = document.getElementById('requestedClassCount');
+            if (selected?.dataset.defaultClasses) countInput.value = selected.dataset.defaultClasses;
+            updateCustomClassQuote();
+        });
         document.getElementById('requestedClassCount')?.addEventListener('input', updateCustomClassQuote);
 
         // Navbar scroll effect
