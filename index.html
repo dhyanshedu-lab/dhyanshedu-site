@@ -199,11 +199,7 @@
         .course-format-option h4 { min-height:0; margin-bottom:8px; font-size:13px; }
         .course-fee-item { min-height:0; padding:10px 0; }
         .course-fee-item h5 { font-size:12px; margin-bottom:8px; }
-        .course-fee-description { font-size:10px; }
-        .course-format-usd { font-size:13px; }
-        .course-format-unit { min-height:0; margin:5px 0 4px; font-size:11px; }
         .custom-class-selection { padding:15px; margin:14px 0; border:1px solid rgba(212,160,23,.22); border-radius:14px; background:rgba(7,17,32,.22); }
-        .custom-class-quote { min-height:52px; font-size:18px; }
         .refund-form-note { font-size:12px; margin:2px 0 14px; }
         .course-guarantee { display:flex; gap:16px; align-items:flex-start; max-width:900px; margin:24px auto 0; padding:22px 24px; border:1px solid rgba(212,160,23,.45); border-radius:18px; background:rgba(212,160,23,.09); color:var(--white); }
         .course-guarantee > i { color:var(--accent-gold-light); font-size:25px; margin-top:3px; }
@@ -217,7 +213,6 @@
         .course-fee-item { min-height:120px; }
         .custom-class-selection { margin-top:16px; }
         .custom-class-selection small { display:block; color:var(--text-gray); font-size:12px; margin-top:6px; }
-        .custom-class-quote { min-height:48px; display:flex; align-items:center; padding:12px 14px; border:1px solid rgba(212,160,23,.45); border-radius:10px; background:rgba(212,160,23,.08); color:var(--accent-gold-light); font-weight:700; }
         .refund-form-note { margin:4px 0 18px; color:var(--text-gray); font-size:13px; line-height:1.6; }
         .refund-form-note i { color:var(--accent-gold-light); margin-right:6px; }
 
@@ -1075,7 +1070,7 @@
         .course-select-group { margin-bottom: 18px; }
         @media (max-width: 900px) { .courses-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         @media (max-width: 600px) { .courses { padding: 68px 0 74px; } .courses-grid { grid-template-columns: 1fr; gap: 16px; } .course-card { padding: 24px; } .course-card > p { min-height: 0; } }
-        @media (max-width: 380px) { .course-format-options { gap: 8px; } .course-format-option { padding: 13px 10px; } .course-format-price { font-size: 22px; } }
+        @media (max-width: 380px) { .course-format-options { gap: 8px; } .course-format-option { padding: 13px 10px; } }
         /* ===== HERO PROGRAMME & FEE SNAPSHOT ===== */
         .hero-programme-tags{display:flex;flex-wrap:wrap;gap:8px;margin:-12px 0 22px}
         .hero-programme-tags span{font-size:11px;line-height:1.4;color:#e6edf7;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.055);padding:7px 10px;border-radius:30px}
@@ -1539,7 +1534,7 @@
                         </div>
                         <p class="refund-form-note"><i class="fa-solid fa-shield-heart"></i> Not satisfied after your first 5 classes? Get a 100% refund.</p>
                         <button type="submit" class="form-submit">
-                            <i class="fa-solid fa-paper-plane"></i> Book Free Demo Class
+                            <i class="fa-solid fa-paper-plane"></i> Send Enquiry
                         </button>
                     </form>
                 </div>
@@ -1718,10 +1713,10 @@
                     container.append(card);
                 });
                 if (!(result.fee_plans || []).length) {
-                    container.textContent = 'New Maths fee options will be published here shortly. Please contact us for details.';
+                    container.textContent = 'Programme options will be published here shortly. Please contact us for details.';
                 }
             } catch (error) {
-                container.textContent = 'Current fees could not be loaded. Please contact DhyanshEdu for the latest pricing.';
+                container.textContent = 'Programme options could not be loaded. Please contact DhyanshEdu for assistance.';
             }
         }
         loadPublicFeePlans();
