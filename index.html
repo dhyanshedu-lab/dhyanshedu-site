@@ -1061,10 +1061,6 @@
         @media(max-width:640px){.course-fee-item{min-height:270px}}
         .course-fee-item:first-of-type { border-top: 0; margin-top: 4px; padding-top: 4px; }
         .course-fee-item h5 { font-size: 13px; line-height: 1.45; color: #fff; font-weight: 700; margin: 0 0 6px; }
-        .course-fee-description { font-size: 11px; line-height: 1.55; color: var(--text-gray); margin: 5px 0; }
-        .course-fee-terms { font-size: 11px; color: #d4dbea; margin-top: 7px; }
-        .course-fee-terms summary { cursor: pointer; color: var(--accent-gold-light); font-weight: 700; }
-        .course-fee-terms p { white-space: pre-line; margin-top: 6px; line-height: 1.5; }
         .course-format-option { min-width: 0; min-height: 100%; display: flex; flex-direction: column; padding: 16px 14px; border: 1px solid rgba(212,160,23,.2); border-radius: 14px; background: rgba(7,17,32,.32); }
         .course-format-option h4 { display: flex; align-items: flex-start; gap: 7px; min-height: 48px; color: #e9edf5; font-size: 12px; font-weight: 600; line-height: 1.45; margin-bottom: 10px; }
         .course-format-option h4 i { color: var(--accent-gold); }
@@ -1081,8 +1077,6 @@
         .course-format-unavailable { margin-top: auto; }
 
         .course-format-unavailable { color: var(--text-gray); font-size: 11px; padding: 10px 0; }
-        .course-disclaimer { margin: 24px auto 0; max-width: 900px; text-align: center; color: #c8d0df; font-size: 12px; line-height: 1.7; }
-        .course-disclaimer i { color: var(--accent-gold-light); margin-right: 5px; }
         .course-select-group { margin-bottom: 18px; }
         @media (max-width: 900px) { .courses-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         @media (max-width: 600px) { .courses { padding: 68px 0 74px; } .courses-grid { grid-template-columns: 1fr; gap: 16px; } .course-card { padding: 24px; } .course-card > p { min-height: 0; } }
@@ -1673,9 +1667,6 @@
                     groups.get(range).push(plan);
 
                     const format = plan.batch_type === 'one_to_one' ? 'One-to-one' : 'Small group (4–5 students)';
-                    const price = Number(plan.amount_paise || 0) / 100;
-                    const formatted = '₹' + price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                    const usdFormatted = publicUsdLabel(price);
                     const option = document.createElement('option');
                     option.value = plan.id;
                     option.textContent = plan.name + ' · ' + format;
@@ -1684,42 +1675,6 @@
                     option.dataset.defaultClasses = /JEE/i.test(plan.name || '') ? '100' : '50';
                     select.append(option);
                 });
-
-                // Show a compact, live fee snapshot in the first screen.
-                const heroFees = document.getElementById('hero-fee-options');
-                if (heroFees) {
-                    heroFees.replaceChildren();
-                    [
-                        { type: 'one_to_one', title: 'One-to-one coaching' },
-                        { type: 'group', title: 'Small-group coaching' }
-                    ].forEach(format => {
-                        const available = (result.fee_plans || []).filter(plan =>
-                            format.type === 'one_to_one' ? plan.batch_type === 'one_to_one' : plan.batch_type !== 'one_to_one'
-                        );
-                        const card = document.createElement('div');
-                        card.className = 'hero-fee-option';
-                        const heading = document.createElement('h3');
-                        heading.textContent = format.title;
-                        card.append(heading);
-                        if (available.length) {
-                            const lowest = available.reduce((best, plan) =>
-                                Number(plan.amount_paise || 0) < Number(best.amount_paise || 0) ? plan : best
-                            );
-                            const price = Number(lowest.amount_paise || 0) / 100;
-                            const amount = document.createElement('strong');
-                            amount.textContent = publicUsdLabel(price);
-                            const inr = document.createElement('small');
-                            inr.textContent = '₹' + price.toLocaleString('en-IN', { maximumFractionDigits: 2 }) + ' INR / 60 min';
-                            card.append(amount, inr);
-                        } else {
-                            const unavailable = document.createElement('small');
-                            unavailable.className = 'hero-fee-empty';
-                            unavailable.textContent = 'Contact us for availability';
-                            card.append(unavailable);
-                        }
-                        heroFees.append(card);
-                    });
-                }
 
                 groups.forEach((plans, range) => {
                     const card = document.createElement('article');
