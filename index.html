@@ -1086,6 +1086,36 @@
         @media (max-width: 900px) { .courses-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         @media (max-width: 600px) { .courses { padding: 68px 0 74px; } .courses-grid { grid-template-columns: 1fr; gap: 16px; } .course-card { padding: 24px; } .course-card > p { min-height: 0; } }
         @media (max-width: 380px) { .course-format-options { gap: 8px; } .course-format-option { padding: 13px 10px; } .course-format-price { font-size: 22px; } }
+
+        /* ===== CLEANER COURSE & PACKAGE HIERARCHY ===== */
+        .course-card { padding:24px; }
+        .course-card > p { font-size:12px; line-height:1.55; margin-bottom:4px; }
+        .course-programme-meta { grid-template-columns:1fr auto; align-items:center; gap:5px 10px; margin:12px 0 14px; padding:12px 14px; background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.10); }
+        .course-programme-meta strong { grid-column:1; font-size:14px; line-height:1.35; }
+        .course-programme-meta span:first-of-type { grid-column:1/-1; color:#cbd5e3; font-size:11px; }
+        .course-programme-meta span:last-of-type { grid-column:1/-1; color:#9eabc0; font-size:10px; }
+        .course-format-options { gap:10px; }
+        .course-format-option { padding:14px 13px; background:rgba(5,14,28,.22); border-color:rgba(255,255,255,.11); }
+        .course-format-option h4 { min-height:0; margin-bottom:8px; font-size:12px; }
+        .course-fee-item { min-height:0; padding:10px 0 0; margin-top:8px; }
+        .course-fee-item h5 { font-size:12px; margin-bottom:4px; }
+        .course-fee-description { font-size:10px; line-height:1.45; margin:4px 0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+        .course-format-price { font-size:23px; }
+        .course-format-usd { font-size:12px; }
+        .course-format-unit { min-height:0; margin:4px 0 5px; font-size:10px; }
+        .course-format-per-class { font-size:10px; margin:0 0 9px; }
+        .course-fee-terms { margin-top:7px; font-size:10px; }
+        .course-fee-reveal { padding:8px 9px; }
+        .course-enquire { padding:9px 8px; font-size:10px; }
+        .course-disclaimer { margin-top:18px; font-size:11px; }
+        @media(max-width:600px) {
+            .course-card { padding:19px; }
+            .course-format-options { gap:9px; }
+            .course-format-option { padding:12px 10px; }
+            .course-programme-meta { padding:11px 12px; }
+            .course-format-price { font-size:21px; }
+        }
+
         /* ===== HERO PROGRAMME & FEE SNAPSHOT ===== */
         .hero-programme-tags{display:flex;flex-wrap:wrap;gap:8px;margin:-12px 0 22px}
         .hero-programme-tags span{font-size:11px;line-height:1.4;color:#e6edf7;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.055);padding:7px 10px;border-radius:30px}
@@ -1542,9 +1572,9 @@
                         </div>
                         <div class="form-row custom-class-selection">
                             <div class="form-group custom-package-highlight">
-                                <label for="requestedClassCount">Choose your own package size</label>
+                                <label for="requestedClassCount">Number of classes</label>
                                 <input type="number" id="requestedClassCount" name="requestedClassCount" min="1" max="100" step="1" value="50" required inputmode="numeric">
-                                <small>Fully flexible: choose 1–100 classes. Standard package: 50 classes (JEE: 100).</small>
+                                <small>50 classes is suggested, not required. Choose any number from 1–100.</small>
                             </div>
                             <div class="form-group">
                                 <label>Package fee</label>
@@ -1745,14 +1775,12 @@
                     const programmeMeta = document.createElement('div');
                     programmeMeta.className = 'course-programme-meta';
                     const classCount = document.createElement('strong');
-                    classCount.textContent = isJeeProgramme ? '100-class standard package (recommended)' : '50-class standard package (recommended)';
+                    classCount.textContent = isJeeProgramme ? '100 classes · recommended' : '50 classes · recommended';
                     const packageNote = document.createElement('span');
-                    packageNote.textContent = 'Not mandatory — choose any class count from 1–100.';
-                    const duration = document.createElement('span');
-                    duration.textContent = '60 minutes per class · flexible package size';
-                    const weekly = document.createElement('span');
-                    weekly.textContent = isJeeProgramme ? '4 classes per week' : '3 classes per week';
-                    programmeMeta.append(classCount, packageNote, duration, weekly);
+                    packageNote.textContent = 'Optional starting point. Choose 1–100 classes.';
+                    const schedule = document.createElement('span');
+                    schedule.textContent = isJeeProgramme ? '60 min per class · 4 classes/week' : '60 min per class · 3 classes/week';
+                    programmeMeta.append(classCount, packageNote, schedule);
 
                     const formats = document.createElement('div');
                     formats.className = 'course-format-options';
