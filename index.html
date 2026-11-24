@@ -1705,7 +1705,7 @@
                     if (!groups.has(range)) groups.set(range, []);
                     groups.get(range).push(plan);
 
-                    const format = plan.batch_type === 'one_to_one' ? 'One-to-one' : 'Small group (4–5 students)';
+                    const format = plan.batch_type === 'one_to_one' ? 'One-to-one' : 'Small group (3–4 students)';
                     const price = Number(plan.amount_paise || 0) / 100;
                     const formatted = '₹' + price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                     const usdFormatted = publicUsdLabel(price);
@@ -1725,7 +1725,7 @@
                     heroFees.replaceChildren();
                     [
                         { type: 'one_to_one', title: 'One-to-one coaching' },
-                        { type: 'group', title: 'Small-group coaching' }
+                        { type: 'group', title: 'Small-group coaching · 3–4 students' }
                     ].forEach(format => {
                         const available = (result.fee_plans || []).filter(plan =>
                             format.type === 'one_to_one' ? plan.batch_type === 'one_to_one' : plan.batch_type !== 'one_to_one'
@@ -1787,7 +1787,7 @@
 
                     [
                         { type: 'one_to_one', label: 'One-to-one', icon: 'fa-user' },
-                        { type: 'group', label: 'Small group', icon: 'fa-users' }
+                        { type: 'group', label: 'Small group · 3–4 students', icon: 'fa-users' }
                     ].forEach(info => {
                         const matchingPlans = plans.filter(item => item.batch_type === info.type);
                         const optionCard = document.createElement('div');
