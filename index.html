@@ -1524,7 +1524,9 @@
                                     <option value="JEE">JEE</option>
                                     <option value="AUS">AUS Curriculum</option>
                                     <option value="US">US Curriculum</option>
+                                    <option value="Other">Other</option>
                                 </select>
+                                <input type="text" id="otherBoard" name="otherBoard" placeholder="Please specify your curriculum / board" maxlength="100" hidden style="margin-top:10px;">
                             </div>
                         </div>
                         <div class="form-group course-select-group">
@@ -1864,6 +1866,18 @@
         });
         document.getElementById('requestedClassCount')?.addEventListener('input', updateCustomClassQuote);
 
+        // Allow students to specify a curriculum or examination board not listed.
+        const boardSelect = document.getElementById('board');
+        const otherBoardInput = document.getElementById('otherBoard');
+        function syncOtherBoardField() {
+            const isOther = boardSelect?.value === 'Other';
+            otherBoardInput.hidden = !isOther;
+            otherBoardInput.required = isOther;
+            if (!isOther) otherBoardInput.value = '';
+        }
+        boardSelect?.addEventListener('change', syncOtherBoardField);
+        syncOtherBoardField();
+
         // Navbar scroll effect
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
@@ -1897,7 +1911,7 @@
                 phone: document.getElementById('phone').value.trim(),
                 email: document.getElementById('email').value.trim(),
                 student_class: document.getElementById('studentClass').value,
-                board: document.getElementById('board').value,
+                board: document.getElementById('board').value === 'Other' ? (document.getElementById('otherBoard').value.trim() || 'Other') : document.getElementById('board').value,
                 course_interest: (document.getElementById('courseInterest').selectedOptions[0]?.dataset.name || 'Maths programme') + ' · ' + document.getElementById('requestedClassCount').value + ' classes',
                 fee_plan_id: document.getElementById('courseInterest').value || '',
                 learning_format: document.getElementById('courseInterest').selectedOptions[0]?.dataset.format || '',
