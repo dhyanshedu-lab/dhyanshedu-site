@@ -1054,6 +1054,10 @@
         @media(max-width:640px){.course-fee-item{min-height:270px}}
         .course-fee-item:first-of-type { border-top: 0; margin-top: 4px; padding-top: 4px; }
         .course-fee-item h5 { font-size: 13px; line-height: 1.45; color: #fff; font-weight: 700; margin: 0 0 6px; }
+        .course-fee-description { font-size:11px; line-height:1.55; color:var(--text-gray); margin:5px 0; }
+        .course-fee-terms { font-size:11px; color:#d4dbea; margin-top:7px; }
+        .course-fee-terms summary { cursor:pointer; color:var(--accent-gold-light); font-weight:700; }
+        .course-fee-terms p { white-space:pre-line; margin-top:6px; line-height:1.5; }
         .course-format-option { min-width: 0; min-height: 100%; display: flex; flex-direction: column; padding: 16px 14px; border: 1px solid rgba(212,160,23,.2); border-radius: 14px; background: rgba(7,17,32,.32); }
         .course-format-option h4 { display: flex; align-items: flex-start; gap: 7px; min-height: 48px; color: #e9edf5; font-size: 12px; font-weight: 600; line-height: 1.45; margin-bottom: 10px; }
         .course-format-option h4 i { color: var(--accent-gold); }
@@ -1692,6 +1696,29 @@
                                 const planTitle = document.createElement('h5');
                                 planTitle.textContent = plan.plan_name || plan.name || 'Maths programme';
                                 feeItem.append(planTitle);
+
+                                if (plan.description) {
+                                    const description = document.createElement('p');
+                                    description.className = 'course-fee-description';
+                                    description.textContent = plan.description;
+                                    feeItem.append(description);
+                                }
+                                if (plan.inclusions) {
+                                    const inclusions = document.createElement('p');
+                                    inclusions.className = 'course-fee-description';
+                                    inclusions.textContent = 'Includes: ' + plan.inclusions;
+                                    feeItem.append(inclusions);
+                                }
+                                if (plan.terms) {
+                                    const terms = document.createElement('details');
+                                    terms.className = 'course-fee-terms';
+                                    const summary = document.createElement('summary');
+                                    summary.textContent = 'Fee details & terms';
+                                    const detail = document.createElement('p');
+                                    detail.textContent = plan.terms;
+                                    terms.append(summary, detail);
+                                    feeItem.append(terms);
+                                }
 
                                 const enquire = document.createElement('a');
                                 enquire.className = 'course-enquire';
