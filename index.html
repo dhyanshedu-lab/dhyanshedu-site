@@ -1805,7 +1805,13 @@
                                 const feeItem = document.createElement('div');
                                 feeItem.className = 'course-fee-item';
                                 const planTitle = document.createElement('h5');
-                                planTitle.textContent = plan.plan_name || plan.name || 'Maths programme';
+                                const rawPlanTitle = plan.plan_name || plan.name || 'Maths programme';
+                                const displayPlanTitle = rawPlanTitle
+                                    .replace(/\\bclasses?\\s*\\d+\\s*[–-]\\s*\\d+\\b/gi, '')
+                                    .replace(/\\s*[·|–-]\\s*/g, ' ')
+                                    .replace(/\\s+/g, ' ')
+                                    .trim();
+                                planTitle.textContent = displayPlanTitle || 'Maths programme';
                                 feeItem.append(planTitle);
 
                                 const programmeDetails = document.createElement('details');
