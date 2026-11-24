@@ -211,6 +211,12 @@
         .course-guarantee > i { color:var(--accent-gold-light); font-size:25px; margin-top:3px; }
         .course-guarantee strong { display:block; color:var(--accent-gold-light); font-size:18px; margin-bottom:5px; }
         .course-guarantee p { color:var(--text-gray); line-height:1.65; margin:0; }
+        .custom-package-highlight { padding:15px; border:1px solid rgba(212,160,23,.55); border-radius:14px; background:linear-gradient(120deg,rgba(212,160,23,.13),rgba(7,17,32,.28)); }
+        .custom-package-highlight label { color:var(--accent-gold-light); font-weight:800; font-size:15px; }
+        .custom-package-highlight input { border-color:rgba(212,160,23,.6); font-size:20px; font-weight:700; }
+        .course-programme-meta strong { color:var(--accent-gold-light); font-size:15px; }
+        .course-programme-meta span { font-size:12px; }
+        .course-fee-item { min-height:120px; }
         .custom-class-selection { margin-top:16px; }
         .custom-class-selection small { display:block; color:var(--text-gray); font-size:12px; margin-top:6px; }
         .custom-class-quote { min-height:48px; display:flex; align-items:center; padding:12px 14px; border:1px solid rgba(212,160,23,.45); border-radius:10px; background:rgba(212,160,23,.08); color:var(--accent-gold-light); font-weight:700; }
@@ -1234,9 +1240,9 @@
                     <a href="#courses" class="hero-fees-text-link">Explore programmes & fees <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
                 <div class="hero-fee-preview" aria-live="polite">
-                    <div class="hero-fee-heading"><span>PROGRAMMES & FEES</span><small>Flexible learning options</small></div>
-                    <p class="hero-fee-intro">Explore our Maths programmes, choose one-to-one or small-group learning, and view the fee details that match your class.</p>
-                    <a class="hero-fee-link" href="#courses">Explore programmes & view fees <i class="fa-solid fa-arrow-right"></i></a>
+                    <div class="hero-fee-heading"><span>FLEXIBLE CLASS PACKAGES</span><small>Made around your learning goals</small></div>
+                    <p class="hero-fee-intro">Choose your own custom class size. Select the programme and learning format that works for you.</p>
+                    <a class="hero-fee-link" href="#courses">Explore programmes <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </div>
             <div class="hero-image">
@@ -1301,7 +1307,7 @@
             <div id="public-fee-plans" class="courses-grid" aria-live="polite">
                 <p class="muted">Loading current Maths fees…</p>
             </div>
-            <p class="course-disclaimer"><i class="fa-solid fa-circle-info"></i> USD is shown first as an indicative conversion using the latest available exchange rate; INR is the base price and remains unchanged. Prices are per student for each 60-minute live session. Choose any number of classes to suit your learning plan. International students are welcome—contact us for a local-currency quotation.</p>
+            
             <div class="course-guarantee"><i class="fa-solid fa-shield-heart"></i><div><strong>100% Money-Back Guarantee</strong><p>Not satisfied? Request a 100% refund of payments made—even after completing your first 5 classes. No deductions.</p></div></div>
         </div>
     </section>
@@ -1536,14 +1542,10 @@
                             </select>
                         </div>
                         <div class="form-row custom-class-selection">
-                            <div class="form-group">
-                                <label for="requestedClassCount">Number of classes</label>
+                            <div class="form-group custom-package-highlight">
+                                <label for="requestedClassCount">Choose your own package size</label>
                                 <input type="number" id="requestedClassCount" name="requestedClassCount" min="1" max="100" step="1" value="50" required inputmode="numeric">
-                                <small>Standard package: 50 classes (JEE: 100).</small>
-                            </div>
-                            <div class="form-group">
-                                <label>Package fee</label>
-                                <div id="customClassQuote" class="custom-class-quote" aria-live="polite">Select a programme to view the package fee.</div>
+                                <small>Fully flexible: choose 1–100 classes. Standard package: 50 classes (JEE: 100).</small>
                             </div>
                         </div>
                         <p class="refund-form-note"><i class="fa-solid fa-shield-heart"></i> Not satisfied after your first 5 classes? Get a 100% refund.</p>
@@ -1676,10 +1678,9 @@
                     const usdFormatted = publicUsdLabel(price);
                     const option = document.createElement('option');
                     option.value = plan.id;
-                    option.textContent = plan.name + ' · ' + format + ' · ' + usdFormatted + ' · ' + formatted + '/hour';
+                    option.textContent = plan.name + ' · ' + format;
                     option.dataset.format = plan.batch_type;
                     option.dataset.name = plan.name;
-                    option.dataset.amountPaise = String(Number(plan.amount_paise || 0));
                     option.dataset.defaultClasses = /JEE/i.test(plan.name || '') ? '100' : '50';
                     select.append(option);
                 });
@@ -1743,9 +1744,9 @@
                     classCount.textContent = isJeeProgramme ? '100-class standard package' : '50-class standard package';
                     const duration = document.createElement('span');
                     duration.textContent = '60 minutes per class · flexible package size';
-                    const weekly = document.createElement('span');
-                    weekly.textContent = isJeeProgramme ? '4 classes per week' : '3 classes per week';
-                    programmeMeta.append(classCount, duration, weekly);
+                    classCount.textContent = 'Choose your own custom size';
+                    duration.textContent = 'Flexible package · 1–100 classes';
+                    programmeMeta.append(classCount, duration);
 
                     const formats = document.createElement('div');
                     formats.className = 'course-format-options';
@@ -1771,53 +1772,11 @@
                                 planTitle.textContent = plan.plan_name || plan.name || 'Maths programme';
                                 feeItem.append(planTitle);
 
-                                if (plan.description) {
-                                    const description = document.createElement('p');
-                                    description.className = 'course-fee-description';
-                                    description.textContent = plan.description;
-                                    feeItem.append(description);
-                                }
-
-                                const perClassInr = Number(plan.amount_paise || 0) / 100;
-                                const standardClassCount = isJeeProgramme ? 100 : 50;
-                                const packageInr = perClassInr * standardClassCount;
-                                const amount = document.createElement('strong');
-                                amount.className = 'course-format-price';
-                                amount.textContent = publicUsdLabel(packageInr);
-                                const inrAmount = document.createElement('span');
-                                inrAmount.className = 'course-format-usd';
-                                inrAmount.textContent = '₹' + packageInr.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' INR';
-                                const unit = document.createElement('span');
-                                unit.className = 'course-format-unit';
-                                unit.textContent = standardClassCount + ' classes · 60 minutes each';
-                                feeItem.append(amount, inrAmount, unit);
-                                const perClass = document.createElement('span');
-                                perClass.className = 'course-format-per-class';
-                                perClass.textContent = '₹' + perClassInr.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' per class';
-                                feeItem.append(perClass);
-
-                                if (plan.inclusions) {
-                                    const inclusions = document.createElement('p');
-                                    inclusions.className = 'course-fee-description';
-                                    inclusions.textContent = 'Includes: ' + plan.inclusions;
-                                    feeItem.append(inclusions);
-                                }
-                                if (plan.terms) {
-                                    const terms = document.createElement('details');
-                                    terms.className = 'course-fee-terms';
-                                    const summary = document.createElement('summary');
-                                    summary.textContent = 'Fee details & terms';
-                                    const detail = document.createElement('p');
-                                    detail.textContent = plan.terms;
-                                    terms.append(summary, detail);
-                                    feeItem.append(terms);
-                                }
-
                                 const enquire = document.createElement('a');
                                 enquire.className = 'course-enquire';
                                 enquire.href = '#contact';
                                 enquire.dataset.feePlan = plan.id;
-                                enquire.textContent = 'Enquire about this plan';
+                                enquire.textContent = 'Enquire';
                                 feeItem.append(enquire);
                                 optionCard.append(feeItem);
                             });
@@ -1841,30 +1800,12 @@
         }
         loadPublicFeePlans();
 
-        // Calculate a custom class package from the Admin-published per-session fee.
-        function updateCustomClassQuote() {
-            const planSelect = document.getElementById('courseInterest');
-            const countInput = document.getElementById('requestedClassCount');
-            const quote = document.getElementById('customClassQuote');
-            if (!planSelect || !countInput || !quote) return;
-            const selected = planSelect.selectedOptions[0];
-            const count = Number(countInput.value);
-            const pricePaise = Number(selected?.dataset.amountPaise || 0);
-            if (!planSelect.value || !Number.isInteger(count) || count < 1 || count > 100 || pricePaise <= 0) {
-                quote.textContent = planSelect.value ? 'Enter a valid class quantity to calculate your total.' : 'Select a fee option to calculate your total.';
-                return;
-            }
-            const totalInr = (pricePaise * count) / 100;
-            const usd = publicInrUsdRate ? String.fromCharCode(36) + Math.ceil(totalInr * publicInrUsdRate).toLocaleString('en-US') + ' · ' : '';
-            quote.textContent = usd + '₹' + totalInr.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' INR';
-        }
+        // Keep the selected programme's standard class quantity as the starting point.
         document.getElementById('courseInterest')?.addEventListener('change', () => {
             const selected = document.getElementById('courseInterest').selectedOptions[0];
             const countInput = document.getElementById('requestedClassCount');
             if (selected?.dataset.defaultClasses) countInput.value = selected.dataset.defaultClasses;
-            updateCustomClassQuote();
         });
-        document.getElementById('requestedClassCount')?.addEventListener('input', updateCustomClassQuote);
 
         // Allow students to specify a curriculum or examination board not listed.
         const boardSelect = document.getElementById('board');
