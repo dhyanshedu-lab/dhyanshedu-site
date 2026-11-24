@@ -1745,10 +1745,12 @@
                     const programmeMeta = document.createElement('div');
                     programmeMeta.className = 'course-programme-meta';
                     const classCount = document.createElement('strong');
-                    classCount.textContent = 'Choose your own custom size';
+                    classCount.textContent = isJeeProgramme ? '100-class standard package' : '50-class standard package';
                     const duration = document.createElement('span');
-                    duration.textContent = 'Flexible package · 1–100 classes';
-                    programmeMeta.append(classCount, duration);
+                    duration.textContent = '60 minutes per class · flexible package size';
+                    const weekly = document.createElement('span');
+                    weekly.textContent = isJeeProgramme ? '4 classes per week' : '3 classes per week';
+                    programmeMeta.append(classCount, duration, weekly);
 
                     const formats = document.createElement('div');
                     formats.className = 'course-format-options';
@@ -1809,7 +1811,7 @@
                                     const terms = document.createElement('details');
                                     terms.className = 'course-fee-terms';
                                     const summary = document.createElement('summary');
-                                    summary.textContent = 'Fee details & terms';
+                                    summary.textContent = 'View terms';
                                     const detail = document.createElement('p');
                                     detail.textContent = plan.terms;
                                     terms.append(summary, detail);
