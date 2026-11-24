@@ -1573,8 +1573,8 @@
                         <div class="form-row custom-class-selection">
                             <div class="form-group custom-package-highlight">
                                 <label for="requestedClassCount">Number of classes</label>
-                                <input type="number" id="requestedClassCount" name="requestedClassCount" min="1" max="100" step="1" value="50" required inputmode="numeric">
-                                <small>50 classes is suggested, not required. Choose any number from 1–100.</small>
+                                <input type="number" id="requestedClassCount" name="requestedClassCount" min="1" max="100" step="1" value="40" required inputmode="numeric">
+                                <small>40 classes is suggested for regular programmes; 100 for JEE. Neither is mandatory.</small>
                             </div>
                             <div class="form-group">
                                 <label>Package fee</label>
@@ -1715,7 +1715,7 @@
                     option.dataset.format = plan.batch_type;
                     option.dataset.name = plan.name;
                     option.dataset.amountPaise = String(Number(plan.amount_paise || 0));
-                    option.dataset.defaultClasses = /JEE/i.test(plan.name || '') ? '100' : '50';
+                    option.dataset.defaultClasses = /JEE/i.test(plan.name || '') ? '100' : '40';
                     select.append(option);
                 });
 
@@ -1775,7 +1775,7 @@
                     const programmeMeta = document.createElement('div');
                     programmeMeta.className = 'course-programme-meta';
                     const classCount = document.createElement('strong');
-                    classCount.textContent = isJeeProgramme ? '100 classes · recommended' : '50 classes · recommended';
+                    classCount.textContent = isJeeProgramme ? '100 classes · recommended' : '40 classes · recommended';
                     const packageNote = document.createElement('span');
                     packageNote.textContent = 'Optional starting point. Choose 1–100 classes.';
                     const schedule = document.createElement('span');
@@ -1819,7 +1819,7 @@
                                 }
 
                                 const perClassInr = Number(plan.amount_paise || 0) / 100;
-                                const standardClassCount = isJeeProgramme ? 100 : 50;
+                                const standardClassCount = isJeeProgramme ? 100 : 40;
                                 const packageInr = perClassInr * standardClassCount;
                                 const amount = document.createElement('strong');
                                 amount.className = 'course-format-price';
