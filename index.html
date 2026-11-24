@@ -1197,6 +1197,32 @@
         }
         @media(max-width:360px){.hero-fee-heading{align-items:flex-start;flex-direction:column}.hero-fee-heading small{text-align:left}.hero-fee-option strong{font-size:15px}}
         .mentor-grid.mentor-details-only { grid-template-columns: minmax(0, 1fr); max-width: 900px; margin-inline: auto; }
+    
+        /* Professional fee-card typography and consistent hierarchy */
+        .course-card > p { font-size:13px; line-height:1.6; }
+        .course-programme-meta strong { font-size:15px; }
+        .course-programme-meta span:first-of-type { font-size:12px; line-height:1.5; }
+        .course-programme-meta span:last-of-type { font-size:11px; line-height:1.5; }
+        .course-format-option h4,
+        .course-format-option h4.small-group-label { font-size:13px; line-height:1.45; }
+        .course-fee-item h5 { font-size:14px; line-height:1.4; }
+        .course-format-price { font-size:24px; line-height:1.25; }
+        .course-format-usd { font-size:13px; line-height:1.45; }
+        .course-format-unit { font-size:12px; line-height:1.5; }
+        .course-format-per-class { font-size:12px; line-height:1.5; }
+        .course-enquire { font-size:12px; line-height:1.4; padding:10px 12px; }
+        .course-disclaimer { font-size:12px; line-height:1.65; }
+        @media(max-width:600px) {
+            .course-card { padding:20px; }
+            .course-format-option { padding:13px 11px; }
+            .course-format-price { font-size:22px; }
+            .course-format-usd { font-size:12px; }
+            .course-format-unit,
+            .course-format-per-class { font-size:11px; }
+        }
+        @media(max-width:360px) {
+            .course-format-price { font-size:20px; }
+        }
     </style>
 </head>
 <body>
