@@ -1840,18 +1840,6 @@
                                 planTitle.textContent = displayPlanTitle || 'Maths programme';
                                 feeItem.append(planTitle);
 
-                                const programmeDetails = document.createElement('details');
-                                programmeDetails.className = 'course-fee-terms';
-                                const programmeSummary = document.createElement('summary');
-                                programmeSummary.textContent = 'Programme details';
-                                const programmeContent = document.createElement('div');
-                                if (plan.description) {
-                                    const description = document.createElement('p');
-                                    description.className = 'course-fee-description';
-                                    description.textContent = plan.description;
-                                    programmeContent.append(description);
-                                }
-
                                 const perClassInr = Number(plan.amount_paise || 0) / 100;
                                 const standardClassCount = isJeeProgramme ? 100 : 40;
                                 const packageInr = perClassInr * standardClassCount;
@@ -1870,16 +1858,6 @@
                                 perClass.textContent = '₹' + perClassInr.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' per class';
                                 feeItem.append(perClass);
 
-                                if (plan.inclusions) {
-                                    const inclusions = document.createElement('p');
-                                    inclusions.className = 'course-fee-description';
-                                    inclusions.textContent = 'Includes: ' + plan.inclusions;
-                                    programmeContent.append(inclusions);
-                                }
-                                if (programmeContent.childNodes.length) {
-                                    programmeDetails.append(programmeSummary, programmeContent);
-                                    feeItem.append(programmeDetails);
-                                }
                                 const enquire = document.createElement('a');
                                 enquire.className = 'course-enquire';
                                 enquire.href = '#contact';
